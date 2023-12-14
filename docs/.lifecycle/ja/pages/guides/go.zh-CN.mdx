@@ -1,0 +1,13 @@
+---
+title: Go
+ogImageTitle: Go プロジェクトのデプロイ
+ogImageSubtitle: Zeabur で Go プロジェクトをデプロイする
+---
+
+# Go プロジェクトのデプロイ
+
+すべての [Go Modules](https://blog.golang.org/using-go-modules) を使用するプロジェクトはデプロイ可能です。ただし、プロジェクトのルートディレクトリにプログラムのコンパイル入口となる `main.go` が必要です。
+
+もし複数のプログラムコンパイル入口がある場合、それらを `cmd` ディレクトリの下に置く必要があります。例えば `cmd/server-a/main.go` と `cmd/server-b/main.go` などです。
+
+Zeabur は自動的に `cmd` ディレクトリの下にある Service 名称と同じプログラムコンパイル入口を識別し、デプロイします。

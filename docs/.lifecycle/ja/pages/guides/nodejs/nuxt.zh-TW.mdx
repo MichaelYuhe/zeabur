@@ -1,0 +1,66 @@
+---
+title: Nuxt
+ogImageTitle: Nuxtプロジェクトのデプロイ
+ogImageSubtitle: ZeaburでNuxtプロジェクトをデプロイする方法
+---
+
+import { Tab, Tabs, Callout } from 'nextra-theme-docs'
+
+# Nuxtプロジェクトのデプロイ
+
+ZeaburでNuxtプロジェクトをデプロイします。
+
+### 第一歩： Nuxtプロジェクトの作成（オプション）
+
+ターミナルを開き、以下のコマンドを入力して、`nuxi`を使ってNuxtプロジェクトを作成します：
+
+<Tabs items={['pnpm', 'npx']}>
+  <Tab>
+    ```bash copy
+    pnpm dlx nuxi init <project-name>
+    ```
+  </Tab>
+  <Tab>
+    ```bash copy
+    npx nuxi init <project-name>
+    ```
+  </Tab>
+</Tabs>
+
+次にパッケージをインストールし、ターミナルに以下のコマンドを入力します：
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash copy
+    pnpm install --shamefully-hoist
+    ```
+  </Tab>
+  <Tab>
+    ```bash copy
+    npm install
+    ```
+  </Tab>
+  <Tab>
+    ```bash copy
+    yarn
+    ```
+  </Tab>
+</Tabs>
+
+<Callout type="info" emoji="ℹ️">
+  pnpmの`node_modules`の構造は他のパッケージマネージャーと異なるため、`--shamefully-hoist`を使用してパッケージをインストールする必要があります。デプロイする前に、プロジェクトのルートディレクトリに`.npmrc`ファイルを追加し、ファイルに`shamefully-hoist=true`を入力することを確認してください。
+</Callout>
+
+````.npmrc filename=".npmrc" copy
+shamefully-hoist=true
+````
+
+### 第二歩： Nuxtプロジェクトのデプロイ
+
+プロジェクト内で、**Deploy service** もしくは **Add new service** ボタンをクリックし、**Deploy your source code**を選択してください。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+デプロイしたいNuxtのコードリポジトリを検索し、インポートをクリックすると、Nuxtアプリケーションが自動的にデプロイを開始します。
+
+{/* converted with zhconvert.org | revision dict-a1f426e3-r1031 */}

@@ -1,0 +1,54 @@
+---
+title: Fresh
+ogImageTitle: 部署 Fresh プロジェクト
+ogImageSubtitle: Zeabur であなたの Fresh プロジェクトを展開しましょう
+---
+
+# Fresh プロジェクトの展開
+
+[Fresh](https://fresh.deno.dev/) は、JavaScript と TypeScript に適したモダンなフルスタックウェブフレームワークです。
+
+この記事では、Zeabur での Fresh アプリケーションのワンクリック展開方法を説明します。
+
+## Fresh アプリケーションの作成（オプション）
+
+- まずは、コンピューターに Deno をインストールしてください。
+
+- より詳細な説明は、[Deno 公式ドキュメント](https://deno.land/manual/getting_started/installation) をご覧いただけます。
+
+以下のコマンドを使用して、Deno プロジェクトを初期化し、Fresh フレームワークを使用します。
+
+```bash
+deno run -A -r https://fresh.deno.dev my-project
+```
+
+`main.ts` に、`start` 関数に `port: Deno.env.get("PORT")` を追加して、アプリケーションが Zeabur で指定された環境変数 `PORT` で正しくリッスンできるようにします。
+
+```typescript
+// in main.ts
+await start(manifest, { plugins: [twindPlugin(twindConfig)], port: Deno.env.get("PORT")}, );
+```
+
+## プロジェクトの開発
+
+`deno task start` を実行して開発サーバーを開始します。
+
+```bash
+deno task start
+```
+
+これで、Fresh プロジェクトを開発するためのコードを変更できます。
+
+作業が完了したら、GitHub リポジトリを初期化し、そのプロジェクトを GitHub にアップロードします。
+
+## プロジェクトの展開
+
+プロジェクトで **新しいサービスの展開** ボタンをクリックし、**コードの展開** を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+展開したい Fresh コードリポジトリを検索し、インポートをクリックすると、Fresh アプリケーションが自動的に展開されます。
+
+展開が完了したら、Fresh プロジェクトに外部からアクセス可能な公開ドメインをバインドする方法については、[ドメインのバインディング](../../deploy/domain-binding) ドキュメントを参照してください。
+
+{/* zhconvert.org によって変換されました | 辞書 a1f426e3-r1031 で改訂 */}

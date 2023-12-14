@@ -1,0 +1,64 @@
+---
+title: 環境変数の設定
+ogImageTitle: 環境変数の設定
+ogImageSubtitle: Zeabur での環境変数の設定
+---
+
+# 環境変数の設定
+
+Zeabur では、環境変数を設定し、自動的にそのアプリケーションに注入することができます。
+
+そのアプリケーションを選択し、**環境変数** ページに移動し、**環境変数の追加** をクリックすると、環境変数を追加できます。
+
+## 追加、編集、変更
+
+![環境変数の設定](/environment/add-variables.zh-TW.png)
+
+Zeabur ではデフォルトで以下の環境変数が自動的に注入されます：
+
+- `<YOUR_SERVICE_NAME>_HOST`：内部で通信するためのホスト名
+
+- `PORT`：外部へのポート
+
+- 他の関連サービス、例えばデータベース([PostgreSQL](/databases/postgresql))、[Redis](/databases/redis) などにも関連する環境変数が自動的に注入されます。
+
+そのため、これらの環境変数を自分のアプリケーションに手動で設定する必要はありません。
+
+![データベースの環境変数](/environment/db-env.zh-TW.png)
+
+変数上でマウスをホバーすると、変数の編集または削除を選択できます。
+
+![ホバー](/environment/var-hover.png)
+
+右上のチェックボックスをクリックすると、リストビューに切り替わります。
+
+![リストビュー](/environment/var-list-view.png)
+
+編集アイコンをクリックすると、変数の値を編集できます。
+
+![編集](/environment/var-edit.png)
+
+## 一括編集
+
+複数の変数を一度に追加したい場合は、一括編集機能を使用できます。
+
+上部の **環境変数の編集** ボタンをクリックすると、一括編集モードに入り、`.env` ファイルの編集と同様に、複数のサービスの環境変数を一括して設定できます。
+
+![一括編集](/environment/var-raw-edit.png)
+
+## 変数の参照
+
+Zeabur では、変数を参照する形で他の変数を利用することができます。
+
+変数を設定する際に、テンプレート言語の形式で参照を行うだけです：
+
+```bash
+# 例えば、次のように変数を設定できます
+AUTH_INFOR=${USERNAME}:${PASSWORD}
+```
+
+![変数の参照](/environment/var-reference.png)
+
+これにより、`USERNAME` と `PASSWORD` の値が自動的に組み合わせられ、`AUTH_INFOR` に注入されます。
+
+{/* converted with zhconvert.org | revision dict-a1f426e3-r1031 */}

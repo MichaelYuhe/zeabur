@@ -1,0 +1,264 @@
+---
+title: Node.js
+ogImageTitle: Deploy Node.js Project
+ogImageSubtitle: Deploy Node.js Project on Zeabur
+---
+
+# Deploy Node.js Project
+
+Zeabur supports various types of Node.js projects:
+
+- Native project (supports NPM/Yarn/PNPM/Bun and other package managers)
+- Projects packaged with [Vite](./nodejs/vite)
+- [Qwik](./nodejs/qwik)
+- [Next.js](./nodejs/nextjs)
+- [Remix](./nodejs/remix)
+- [Nuxt.js](./nodejs/nuxtjs)
+- [Umi](./nodejs/umi)
+- [Svelte (Kit)](./nodejs/svelte-kit)
+- [Nest.js](./nodejs/nestjs)
+- [Nue.js](./nodejs/nuejs)
+- [Express](./nodejs/express)
+- Create React App
+- vue-cli
+- Hexo
+- Vitepress
+- Astro (Static, SSR)
+- Slidev
+- Docusaurus
+- Solid Start (Node, Static)
+
+## Disable Cache Functionality
+
+By default, Zeabur will optimize the installation process by caching the dependencies, speeding up the CI/CD process. Ordinary Node.js projects should not be affected, but if your project is managed with tools like pnpm-workspace and the default settings result in compilation failure, you may need to disable the cache functionality in order to use it properly.
+
+Add a `zbpack.json` file to the root directory of your project and add the following content to disable this functionality.
+
+```json
+
+{
+    "cache_dependencies": false
+}
+```
+
+
+## Modify Compilation and Start Commands
+
+If your project type is more unique (such as using tools to achieve Monorepo), you may need to specify the compilation (build) and start commands for your services, such as changing the start command for the `frontend` service to `pnpm run start:frontend` or the build command for the `api` service to `pnpm run start:api`.
+
+Here are two ways to modify these commands.
+
+### Modification on the Web
+
+After deploying the project to Zeabur, expand the "Settings" to modify the "Custom Compilation Command" and "Custom Start Command". After modification, click "Redeploy" to redeploy.
+
+![Node.js: Custom Command](/guides/nodejs/custom-command.png)
+
+
+### Modification via Files
+
+Add the following two settings to `zbpack.json`:
+
+```json
+
+{
+    "build_command": "<Custom Build Command>",
+    "start_command": "<Custom Start Command>"
+}
+```
+
+
+The default settings in `zbpack.json` will be applied to all deployed services. If you want to specify certain commands for specific services (e.g. use a specific command for a service named `api` and another for a service named `frontend`), you will need to create a file named `zbpack.[service-name].json`:
+
+```json
+
+// zbpack.api.json
+{
+    "build_command": "pnpm run build:api",
+    "start_command": "pnpm run start:api"
+}
+```
+
+
+```json
+// zbpack.frontend.json
+{
+    "build_command": "pnpm run build:frontend",
+    "start_command": "pnpm run start:frontend"
+}
+```
+
+The priority of application is `zbpack.[service-name].json` > `zbpack.json`.
+
+## Deploy in Serverless Mode
+
+If your Node.js meets the following conditions, you can deploy it in Serverless mode on Zeabur:
+
+1. The project itself uses frameworks designed for Serverless deployment such as [Next.js](https://nextjs.org/), [Nuxt.js](https://nuxtjs.org/), [Remix](https://remix.run/), etc.
+2. The project itself doesn't use the above frameworks, but the services themselves meet the concept of Serverless: each request's state is independent and can automatically sleep when there are no requests.
+
+### Build the Project in Serverless Format
+
+If your project uses frameworks like Next.js, Nuxt.js, Remix, etc., you can skip this step because [zbpack](https://github.com/zeabur/zbpack) will automatically convert it to a Serverless artifact format.
+
+If your project doesn't use the above frameworks, you will need to manually build the project into [Serverless format](../advanced/serverless-output-format). Here's an example with a basic Express.js application:
+
+```js
+// app.js
+
+const express = require('express')
+const app = express()
+
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
+
+module.exports = app
+```
+
+From the above example, you can see that `app.js` exports the `app` object, which is a format conforming to Zeabur's Serverless processing function. Therefore, the only thing you need to do is output it to the `.zeabur/output/functions/index.func` directory during the build phase.
+
+To achieve this, you can add the following script to your code:
+
+```js
+// scripts/build.js
+
+const esbuild = require('esbuild');
+const fs = require('fs');
+
+// dynamic-required files
+const dynamicRequiredDirs = ['views']
+
+// static files
+const staticFileDirs = ['public']
+
+// Remove old output
+if (fs.existsSync('.zeabur/output')) {
+    console.info('Removing old .zeabur/output')
+    fs.rmSync('.zeabur/output', {recursive: true})
+}
+
+function getModuleEntries() {
+    function getModuleEntriesRecursive(dir) {
+        let entries = []
+        fs.readdirSync(dir).forEach(file => {
+            const path = `${dir}/${file}`
+            if (fs.statSync(path).isDirectory()) {
+                if(file === 'node_modules') return
+                entries = entries.concat(getModuleEntriesRecursive(path))
+            } else if (file.endsWith('.js')) {
+                entries.push(path)
+            }
+        })
+        return entries
+    }
+    return getModuleEntriesRecursive('.')
+}
+
+// build with esbuild
+try {
+    esbuild.build({
+        entryPoints: getModuleEntries(),
+        bundle: false,
+        minify: false,
+        outdir: '.zeabur/output/functions/index.func',
+        platform: 'node',
+        target: 'node20',
+        plugins: [{
+            name: 'make-all-packages-external',
+            setup(build) {
+                let filter = /^[^.\/]|^\.[^.\/]|^\.\.[^\/] // Must not start with "/" or "./" or "../"
+                build.onResolve({filter}, args => ({path: args.path, external: true}))
+            },
+        }],
+    }).then(res => {
+        if (res.errors.length > 0) {
+            console.error(res.errors)
+            process.exit(1)
+        }
+        console.info('Successfully built app.js into .zeabur/output/functions/index.func')
+        fs.copyFileSync('.zeabur/output/functions/index.func/app.js', '.zeabur/output/functions/index.func/index.js')
+```js
+        fs.rmSync('.zeabur/output/functions/index.func/app.js')
+    })
+} catch (error) {
+    console.error(error)
+}
+
+// copy node_modules into function output directory
+console.info('Copying node_modules into .zeabur/output/functions/index.func/node_modules')
+fs.cpSync('node_modules', '.zeabur/output/functions/index.func/node_modules', {recursive: true, verbatimSymlinks: true})
+
+// copy package.json into function output directory
+console.info('Copying package.json into .zeabur/output/functions/index.func')
+fs.cpSync('package.json', '.zeabur/output/functions/index.func/package.json')
+
+// copy dynamic-required files into function output directory, so they can be required during runtime
+dynamicRequiredDirs.forEach(dir => {
+    copyIfDirExists(dir, `.zeabur/output/functions/index.func/${dir}`)
+})
+
+// copy static files into function output directory, so they can be served by the web server directly
+staticFileDirs.forEach(dir => {
+    copyIfDirExists(dir, `.zeabur/output/static`)
+})
+
+function copyIfDirExists(src, dest) {
+    if (fs.statSync(src).isDirectory()) {
+        console.info(`Copying ${src} to ${dest}`)
+        fs.cp(src, dest, {recursive: true}, (err) => {
+            if (err) throw err;
+        });
+        return
+    }
+    console.warn(`${src} is not a directory`)
+}
+```
+
+このスクリプトは非常にシンプルなことを行います。これは [esbuild](https://esbuild.github.io/) を使用してプロジェクトを構築し、その後、すべての `.js` ファイルを元の相対パスに従って `.zeabur/output/functions/index.func` ディレクトリに配置し、`node_modules` と `package.json` を `.zeabur/output/functions/index.func` ディレクトリにコピーして、プロジェクトの構築が完了します。
+
+特にこのスクリプトには、2つの特別な設定フィールドが含まれていることに留意してください。
+
+```js
+// dynamic-required files
+const dynamicRequiredDirs = ['views']
+
+// static files
+const staticFileDirs = ['public']
+```
+
+これらの2つのフィールドにより、`.js` 以外のものも成果物に含めることができます。`dynamicRequiredDirs` は実行時に `require` されるファイルで、`views` ディレクトリのテンプレートファイルなどがあります。`staticFileDirs` は静的ファイルで、`public` ディレクトリの静的リソースなどが含まれます。これらのリソースは `.zeabur/output/static` ディレクトリに配置され、Zeabur Edge Network によって世界中のユーザーに高速に配信されるようになります。
+
+このスクリプトを追加した後は、プロジェクトに `esbuild` をインストールし、`package.json` の `scripts` に `build` コマンドを追加することを忘れないでください。
+
+```json
+{
+    "scripts": {
+        "build": "node scripts/build.js"
+    }
+}
+```
+
+[zeabur/expressjs-template](https://github.com/zeabur/expressjs-template) で完全なサンプルコードを見つけることができます。また、必要に応じて `scripts/build.js` スクリプトを変更することもできます。
+
+## 追加の注意事項
+1. ポートのリッスンには `process.env.PORT` を使用します
+
+    例：
+    ```js
+    const port = process.env.PORT || 3000
+    // const port = 3000 ではなく
+    ```
+
+2. 実行時に nodemon を使用しないようにし、開発が完了したら通常の node コマンドに切り替えます
+
+    例えば、package.json 内
+    ```json
+    {
+    "scripts": {
+        "start": "node server.js"
+        // "start": "nodemon server.js" ではなく
+    },
+    }
+        
+    ```

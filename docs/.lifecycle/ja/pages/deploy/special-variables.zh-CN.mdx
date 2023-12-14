@@ -1,0 +1,69 @@
+---
+title: 特殊変数
+ogImageTitle: 特殊変数 (Special Variable)
+ogImageSubtitle: 直接参照可能で特別な意味を持つ変数。
+---
+
+# 特殊変数
+
+"特殊変数"はZeaburで事前に定義され、直接使用できる環境変数です。
+GitおよびPrebuiltサービスで使用できます。
+
+## 参照方法
+
+- Zeabur内の環境変数入力フィールドで：`${変数}`フォーマットを使用して特殊変数を挿入します。
+- 自分のアプリケーション内で：一般的な環境変数の参照方法と同じ（`process.env.VARIABLE`）。
+
+## 変数の優先順位
+
+サービス間変数の展開の優先順位は次のとおりです。
+
+- 現在のサービスで定義された環境変数が最初に取得されます。
+- 未定義の場合、他のサービスが公開した環境変数が取得されます。
+- 未定義の場合、特殊変数が取得されます。
+
+## 変数リスト
+
+### ホスト名/ポート系
+
+- `${ZEABUR_[ポート名]_URL}`：特定のポートに対応するURL。
+  - 例：`https://test.zeabur.app`。
+  - このURLはあなたが「ドメイン」で設定したものです：
+
+    ![ドメインの設定](/deploy/special-variables/domain-port-customization.png)
+
+- `${ZEABUR_[ポート名]_DOMAIN}`：特定のポートに対応するドメイン。
+  - 例：`test.zeabur.app`。
+  - このURLはあなたが「ドメイン」で設定したものです。
+- `${CONTAINER_HOSTNAME}`: Zeaburプロジェクト内の現在のサービスのホスト名（hostname）。
+    - 通常、プロジェクトに公開（Expose）属性を持つ環境変数（例：`${MYSQL_HOST}`）を作成し、
+      その後`${CONTAINER_HOSTNAME}`の値をこの環境変数に入れます。
+    - ただしZeabur内で他のサービスのホスト名を参照する場合、将来的にZeaburが導入予定のDNS機能を使用することをお勧めします。
+- `${[ポート名]_PORT}`：Prebuiltサービスで定義されたポート。
+    - 例えば、`database / 3306 / TCP`を設定した場合、`DATABASE_PORT`は`3306`になります。
+    - 現在のサービス内でのみ可視です。
+
+### Zeabur情報系
+
+これらの変数はあまり使用されませんが、現在のZeaburサービス/プロジェクトの一意の識別子が必要な場合は非常に役立ちます。
+
+
+- `${ZEABUR_SERVICE_ID}`：サービスID
+- `${ZEABUR_PROJECT_ID}`：プロジェクトID
+- `${ZEABUR_ENVIRONMENT_ID}`：サービス環境ID
+- `${ZEABUR_USER_ID}`：このプロジェクトを作成したユーザーID
+
+### Git情報系
+
+これらの変数はGitサービスのビルド段階でのみ表示されます。
+
+- `${ZEABUR_GIT_COMMIT_SHA}`：現在の展開に関連するGitコミットのSHA値。
+- `${ZEABUR_GIT_AUTHOR}`：現在の展開に関連するGitコミットの著者ID。
+- `${ZEABUR_GIT_BRANCH}`：現在の展開に関連するGitブランチ名。
+- `${ZEABUR_GIT_REPO_NAME}`：現在の展開に関連するGitリポジトリ名。
+- `${ZEABUR_GIT_REPO_OWNER}`：現在の展開に関連するGitリポジトリ所有者ID。
+- `${ZEABUR_GIT_COMMIT_MESSAGE}`：現在の展開に関連するGitコミットメッセージ。
+
+### ツール系
+
+- `${PASSWORD}`：Zeaburが各サービスに生成するランダムなパスワード。

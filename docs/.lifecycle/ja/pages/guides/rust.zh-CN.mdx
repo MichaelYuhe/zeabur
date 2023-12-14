@@ -1,0 +1,66 @@
+---
+title: Rust
+ogImageTitle: Deploying Rust Applications
+ogImageSubtitle: Deploying Rust Applications on Zeabur
+---
+
+# Deploying Rust Projects
+
+Zeabur fundamentally supports all types of Rust applications—by default, it automatically searches for the executable file. If the project has multiple executable files, you can also specify the file to run in the "Service Name" column.
+
+If you don't have a project on hand, you can fork the [zeabur/axum-template](https://github.com/zeabur/axum-template) repository to your GitHub account and then try deploying it on Zeabur.
+
+## Supported Project Types
+
+- Single executable projects: These are Rust projects with only one entry point `src/main.rs`. Zeabur automatically searches for the one executable file in the compilation output (`target/release`). You can also fill in the "Service Name" column with "the name of the final product you want to run," ensuring that the program runs as you expect.
+- Multiple executable projects: If, in addition to `src/main.rs`, the project also has other executable files in `src/bin`, fill in the "Service Name" column with "the name of the final product you want to run."
+- Cargo Workspace monorepo: If your project consists of multiple crates, fill in the "Service Name" column with "the name of the final product you want to run."
+
+If the executable file you fill in does not exist, it will be automatically searched for. The "automatic search" will look for all files in `target/release` and run the first file found. Because this mode is prone to guessing errors in multi-project situations, it is recommended to fill in the correct "Service Name" based on the "finding the name of the final product" method in complex project scenarios (such as the multiple executable projects mentioned in points two and three).
+
+## Finding the Name of the Final Product
+
+You can find the final product in your project's `target/release`. Here's how to find it:
+
+1. You need the Rust toolchain to compile the project, which you can download from the [Rust official website](https://www.rust-lang.org).
+2. Clone the project you want to deploy and navigate to the project directory.
+3. Run `cargo build --release` to compile the project.
+
+    ```bash
+    $ cargo run --release
+    Compiling zeabur v0.1.0 (/project)
+      Finished release [optimized] target(s) in 0.65s
+      Running `target/release/zeabur`
+    ```
+
+4. Find the line "Running `target/release/zeabur`"; you can use the last executable file name (zeabur) as the final product.
+5. Enter `zeabur` in the Service Name.
+
+## Copying Other Files
+
+If you need other files from the source code repository in addition to the executable file. For example:
+
+```plain
+*
+|`-- public  <-- Your program depends on this folder
+|`-- src
+|  `-- main.rs
+|`-- Cargo.toml
+|`-- Cargo.lock
+`--- config.toml   <-- Your program depends on this file
+```
+
+You can fill in a `.zeabur-preserve` file in the source code repository. Enter the folders or files you want to preserve inside. Folders can be specified with a `/` at the end. Here's an example:
+
+```plain
+public/
+config.toml
+```
+
+## Technical Details and Notes
+
+- Multi-stage build is used by default, and the runtime uses `docker.io/library/debian:bookworm-slim` as the base image. Some dynamically linked libraries may fail to work properly when migrating to this image due to missing dependencies. If you encounter such situations, please report it to us so that we can add support for this dependency.
+  - Currently, the dependencies that will be specifically installed include `openssl`.
+- Root privileges are not provided at runtime. If you have related needs, please write your own Dockerfile.
+- To speed up the compilation process, we use `lld` for compilation. If your project does not support `lld`, it is recommended to specify `ld` in the project's `config.toml`; if you want to use a linker like `mold` that is not built in, you need to write your own Dockerfile.
+- We use `cargo-chef` to maximize the cache of the build layer. If you encounter compatibility issues, you can report them to Zeabur or upstream [`LukeMathWalker/cargo-chef`](https://github.com/LukeMathWalker/cargo-chef).

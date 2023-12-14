@@ -1,0 +1,66 @@
+---
+title: Nue
+ogImageTitle: 部署 Nue 项目
+ogImageSubtitle: 在 Zeabur 上部署 Nue 项目
+---
+
+# 部署 Nue 项目
+
+[Nue](https://nuejs.org/) is a powerful alternative to React, Vue, Next.js, Vite, and Astro.
+
+This document will guide you on how to deploy a Nue project on Zeabur.
+
+## 步骤一：创建 Nue 项目
+
+### 方法一：使用 `create-nue` 创建
+
+### Method 1: Bootstrap with `create-nue`
+
+The `create-nue` repository is the best way to get started with Nue JS.
+
+```bash
+# クローンリポジトリ
+git clone https://github.com/nuejs/create-nue.git
+
+# 作成されたアプリに移動
+cd create-nue
+
+# 依存関係をインストール
+npm install
+
+# デモサイトをビルドし、HTTPサーバを起動します
+npm run start
+
+# ブラウザでデモを開く
+open "http://localhost:8080"
+```
+
+#### GitHub へのアップロード
+
+ZeaburでNueプロジェクトをデプロイする場合、まずコードをGitHubにアップロードする必要があります。
+
+GitHubで新しいリポジトリを作成し、コードをリポジトリにプッシュするだけで済みます。詳細については、[GitHub ドキュメント](https://docs.github.com/en/github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line)を参照してください。
+
+### 方法二：Zeabur テンプレートを使用
+
+Nueアプリ用に [テンプレート](https://github.com/zeabur/nuejs-template) を用意しています。このテンプレートを使用するには **Use this template** ボタンをクリックしてください。
+
+![テンプレートを使用](/guides/nodejs/nue/template.png)
+
+## 歩み:部 Nue 画面
+
+**Deploy service** をクリックし、**Deploy your source code** を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+Nue Appのリポジトリを検索し、インポートをクリックすると、Nue Appは自動的にデプロイされます。
+
+## 次の手順
+
+デプロイが完了したら、Nue Appにドメインを設定する必要があるかもしれません。
+
+サービスページの "Domain" タブを開き、"Generate Domain" または "Custom Domain" をクリックします。
+
+サービスにドメインをバインドする方法の詳細については、「[ドメインのバインディング](../deploy/domain-binding)」を参照してください。
+
+![Domain Binding](/guides/nodejs/nue/domain.png)

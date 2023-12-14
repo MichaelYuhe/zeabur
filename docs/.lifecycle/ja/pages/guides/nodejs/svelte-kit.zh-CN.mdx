@@ -1,0 +1,94 @@
+---
+ogImageTitle: 部署 Svelte Kit プロジェクト
+ogImageSubtitle: Zeabur での Svelte Kit プロジェクトのデプロイ方法を紹介
+---
+
+import { Tab, Tabs } from 'nextra-theme-docs'
+
+# Svelte Kit プロジェクトのデプロイ
+
+Zeabur での Svelte Kit プロジェクトのデプロイ方法。
+
+### ステップ 1: Svelte Kit プロジェクトの作成（オプション）
+
+ターミナルを開いて、次のコマンドを入力してください。
+
+```bash
+npm create svelte@latest
+```
+
+次に、以下のコマンドで依存関係をインストールする必要があります：
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash
+    pnpm install
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    npm install
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn
+    ```
+  </Tab>
+</Tabs>
+
+プロジェクトの作成が完了したら、Git リポジトリを初期化し、GitHub にデプロイしてください。
+
+### ステップ 2：`@sveltejs/adapter-node` の設定
+
+次に、`@sveltejs/adapter-node` をインストールする必要があります：
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash
+    pnpm add -D @sveltejs/adapter-node
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    npm install -D @sveltejs/adapter-node
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn add -D @sveltejs/adapter-node
+    ```
+  </Tab>
+</Tabs>
+
+その後、`svelte.config.js` を開き、以下のように変更してください：
+
+```js
+import adapter from '@sveltejs/adapter-node'; // <-- ここに注意
+
+export default {
+  kit: {
+    adapter: adapter({ out: 'build' })
+  }
+}
+```
+
+### ステップ 3：`package.json` の設定
+
+`package.json` を開き、 `scripts` に `start` コマンドを追加してください：
+
+```json
+{
+  "scripts": {
+    "start": "node ./build/index.js"
+  }
+}
+```
+
+### ステップ 4：Svelte Kit プロジェクトのデプロイ
+
+プロジェクト内で、 **デプロイ** サービスをクリックするか、 **新しいサービスを追加** ボタンをクリックし、 **ソースコードをデプロイ** を選択してください。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+デプロイしたい Svelte Kit コードリポジトリを検索し、インポートをクリックすると、Svelte Kit アプリケーションが自動的にデプロイされます。

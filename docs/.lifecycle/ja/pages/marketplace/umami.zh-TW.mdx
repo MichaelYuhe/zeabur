@@ -1,0 +1,77 @@
+---
+title: Umami サービスのデプロイ
+ogImageTitle: Umami サービスのデプロイ
+ogImageSubtitle: Zeabur で Umami サービスをワンクリックでデプロイ
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# Umami サービスのデプロイ
+
+[Umami](https://umami.is/) はシンプルな分析ツールで、ウェブサイトの訪問者についての理解を深めるのに役立ちます。また、[Google Analytics](https://analytics.google.com/) の最も有名なオープンソースの代替品です。
+
+この記事では、Zeabur 上でサービスマーケットプレイスを通じて簡単に自分の Umami サービスをデプロイし、自分のドメインをバインドする方法を教えます。これにより、他のウェブサイトで自分がデプロイした Umami サービスを使用して訪問者の流量を分析できます。
+
+## ステップ１: プロジェクトの作成
+
+まず、Zeabur 上でプロジェクトを作成する必要があります。[プロジェクトリスト](https://dash.zeabur.com/projects) ページにアクセスすると、多くのプロジェクトが表示され、全てのプロジェクトの最後に「プロジェクトの作成」ボタンがあります。
+
+## ステップ２: PostgreSQL サービスのデプロイ
+
+Umami サービスは MySQL と PostgreSQL の二つのデータベースに対応しており、好きなデータベースを選んでデータを保存できます。
+
+本記事では PostgreSQL を例として紹介します。 「サービスの作成」をクリックし、「サービスマーケットプレイス」を選んでリストから PostgreSQL を探します。
+
+![Umami サービスのドメインセクション](/marketplace/umami/deploy-postgresql.png)
+
+PostgreSQL を選択した後、サービスにカスタム名を入力する場所があり、デプロイをクリックします。
+
+## ステップ３: データベースの作成
+
+Umami サービスが正常に動作するためには、PostgreSQL データベースに `umami` という名前のデータベースを事前に作成する必要があります。
+
+任意の PostgreSQL クライアントを使用して、作成された PostgreSQL サービスに接続してください。本記事では [psql](https://www.postgresql.org/docs/9.1/app-psql.html) を使用して接続します。
+
+![PostgreSQL の接続情報セクション](/marketplace/umami/postgre-connect.png)
+
+psql の接続コマンドやその他の接続情報は、Zeabur コンソールの PostgreSQL サービスの「接続」セクションで見つけることができます。
+
+```bash
+psql postgresql://root:password@infra.zeabur.com:12345
+```
+
+次に、psql で以下のコマンドを入力して `umami` データベースを作成してください：
+
+```sql
+CREATE DATABASE umami;
+```
+
+## ステップ４: Umami サービスのデプロイ
+
+Zeabur コンソールで、「サービスの作成」をクリックし、「サービスマーケットプレイス」を選んで Umami をリストから探します。
+
+![Umami サービスのドメインセクション](/marketplace/umami/deploy-umami.png)
+
+Umami を選択後、サービスにカスタム名を入力して、デプロイをクリックします。
+
+<Callout>
+  もし Umami を先にデプロイしてから PostgreSQL をデプロイする場合は、Umami サービスを再起動して、正しいデータベース接続情報を取得する必要があります。
+</Callout>
+
+## ステップ５: ドメインのバインド
+
+Zeabur コンソールの Umami サービスの「ドメイン」セクションで、ドメインをバインドできます。バインドするドメインは自分のドメインでも、Zeabur が提供する無料ドメインでも構いません。
+
+![Umami サービスのドメインセクション](/marketplace/umami/umami-domain.png)
+
+サービスにドメインをバインドする方法については、[ドメインのバインド](../deploy/domain-binding) を参照してください。
+
+## ステップ６: Umami のログインと設定
+
+バインディングが完了すれば、ドメインをクリックして Umami のログインページにアクセスし、デフォルトのアカウント `admin` とパスワード `umami` でログインできます。
+
+![Umami のログインページ](/marketplace/umami/umami-screenshot.png)
+
+その他の Umami の設定については、[Umami 公式ドキュメント](https://umami.is/docs) を参照してください。
+
+{/* converted with zhconvert.org | revision dict-a1f426e3-r1031 */}

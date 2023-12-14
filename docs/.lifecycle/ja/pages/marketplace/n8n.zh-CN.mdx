@@ -1,0 +1,74 @@
+---
+title: Deploy n8n
+ogImageTitle: Deploy n8n
+ogImageSubtitle: Deploy n8n on Zeabur
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# Deploy n8n
+
+[n8n](https://github.com/n8n-io/n8n) is an extensible workflow automation tool. Adopting a fair-code distribution model, n8n always has visible source code, can be self-hosted, and allows you to add your own custom functions, logic, and applications. n8n's node-based approach makes it highly flexible, allowing you to connect anything to anything.
+
+This article will show you how to deploy n8n with PostgreSQL on Zeabur.
+
+## Step One: Create a Project
+
+First, we need to create a project on Zeabur. Go to the [Projects](https://dash.zeabur.com/projects) page, where you will see all your projects, the "Create Project" button at the end of all projects.
+
+Click the **Create Project** button and enter the project name, and you will get a new project.
+
+## Step Two: Deploy PostgreSQL Service
+
+n8n will store user identity data in a PostgreSQL database. Click "Create Service," then choose "Service Marketplace," where you will find PostgreSQL in the list.
+
+![Deploy PostgreSQL](/marketplace/postgresql/deploy.png)
+
+After selecting the **PostgreSQL** service, Zeabur will automatically start deploying the service for you.
+
+## Step Three: Create a Database
+
+In order for the n8n service to run properly, we need to create a database named `n8n` in the PostgreSQL database.
+
+Generally, you need a PostgreSQL client to connect to the PostgreSQL service and create a database. However, Zeabur provides a convenient way to create a database.
+
+In your PostgreSQL service, you can find an option tab called **Database**, where you can manage your databases at your fingertips.
+
+![Database Tab](/marketplace/n8n/database-tab.png)
+
+**n8n** needs a database named `n8n`, so we need to create a database named `n8n`.
+Enter `n8n` in the input field, then click the **Create** button, and Zeabur will create a database named `n8n` for you.
+
+![Database Tab](/marketplace/n8n/database-n8n.png)
+
+## Step Four: Deploy n8n Service
+
+After successfully creating the PostgreSQL service and setting up the database, you can now start deploying n8n.
+Go back to the project page where you just created the **PostgreSQL** service, click **Create Service**, then choose **Service Marketplace**, and you will find n8n in the list.
+
+![Deploy n8n](/marketplace/n8n/deploy.png)
+
+After selecting the **n8n** service, Zeabur will automatically start deploying the service for you.
+
+<Callout>
+  If you deployed n8n before deploying PostgreSQL, you need to restart the n8n service after deploying the PostgreSQL service to ensure that n8n gets the correct database connection information.
+</Callout>
+
+
+## Step Five: Bind a Domain Name
+
+In the "Domain" section of the n8n service in the Zeabur Console, you can bind a domain name.
+
+This domain can be your own domain or a free domain provided by Zeabur.
+
+For information on how to bind a domain name to your service, please refer to [Domain Binding](../deploy/domain-binding).
+
+## Step Six: Set Up Your Account
+
+After the deployment is completed, you can access your n8n service using the domain name you bound. You will see the following page:
+
+![n8n Setup](/marketplace/n8n/setup.png)
+
+Follow the instructions on the page to set up your n8n account. Once setup is complete, you can start using n8n normally.
+
+![finish](/marketplace/n8n/finish.png)

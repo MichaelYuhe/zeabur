@@ -1,0 +1,90 @@
+---
+title: Dockerfile デプロイメント
+ogImageTitle: Dockerfile デプロイメント
+ogImageSubtitle: Dockerfile を通じて Zeabur へのデプロイ
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# Dockerfile デプロイメント
+
+通常、`Dockerfile` を自分で書く必要はありません。Zeabur は現在、さまざまな主流フレームワークに対して、迅速なデプロイメントを提供しています。しかし、もしプロジェクトがこれらのフレームワークを使用していない、あるいはデプロイの方法を自分で定義したい場合は、`Dockerfile` を使用してデプロイすることができます。
+
+<Callout type="warning">
+  Zeabur は現在 `Dockerfile` のデプロイ方法のみをサポートしており、Docker Compose は提供していません。
+</Callout>
+
+## Dockerfile の作成
+
+プロジェクトのルートディレクトリに `Dockerfile` または `dockerfile` という名前のファイルを作成し、その中にデプロイ方法を記述し、最終的に対応する `PORT` が露出していることを確認してください。
+
+Zeabur は自動的にプロジェクトに `Dockerfile` があるかどうかを検出し、あれば Docker を使ってプロジェクトをデプロイします。
+
+<Callout type="info">
+  デプロイメントが開始されると、上部に Docker のアイコンが表示され、プロジェクトが Docker 方式でデプロイされたことがわかります。
+</Callout>
+
+![docker-deploy](/deploy/dockerfile/docker-deploy.png)
+
+## 環境変数
+
+`Dockerfile` で環境変数を使用する必要がある場合は、サービスページで **環境変数** をクリックして追加します。より多くの設定方法については [環境変数](/zh-TW/environment/variables) を参照してください。
+
+![環境変数設定](/environment/add-variables.png)
+
+`Dockerfile` が1段階 (stage) で記述されている、または最後の段階でのみ環境変数を使用する必要がある場合は、手動で `ENV` を記述する必要はありません。Zeabur は自動的に追加します。
+
+### ARG
+
+しかし、`Dockerfile` が複数段階の記述で ([multi-stage](https://docs.docker.com/build/building/multi-stage/))、ビルド前に環境変数を設定する必要がある場合は、`ARG` を使用して設定することができます。
+
+以下に nodejs と nginx を例に、`Dockerfile` でデプロイメントをする方法を示します。
+
+```docker {7-8} copy
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+COPY . .
+
+## こちらの `BUILDTIME_ENV_EXAMPLE` はビルド前に自動的に設定されます
+ARG BUILDTIME_ENV_EXAMPLE
+ENV BUILDTIME_ENV_EXAMPLE=${BUILDTIME_ENV_EXAMPLE}
+
+RUN npm install && \
+    npm run build
+
+FROM nginx:alpine
+
+COPY nginx.conf /etc/nginx/conf.d/configfile.template
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+ENV \
+    PORT=8080 \
+    HOST=0.0.0.0
+
+EXPOSE 8080
+
+CMD sh -c "envsubst '\$PORT' < /etc/nginx/conf.d/configfile.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+```
+
+## 複数の Dockerfile サポート
+
+もしモノリポジトリ内に異なるプロジェクトを個別にデプロイしたい場合は、`Dockerfile.[サービス名]` （または `[サービス名].Dockerfile`）という名前でファイルを作成し、指定したサービス名でデプロイすることができます。
+
+このケースでは、もし 3つのマイクロサービスをデプロイしたいが、同じ Git リポジトリーを使用している場合、Dockerfile を次のように命名します：
+
+- `Dockerfile.storage`（或いは `storage.Dockerfile`）: Node.js の `storage` マイクロサービスをデプロイ
+- `Dockerfile.discord`（或いは `discord.Dockerfile`）: Node.js の `discord` マイクロサービスをデプロイ
+- `Dockerfile.frontend`（或いは `frontend.Dockerfile`）: Next.js の `frontend` フロントエンドをデプロイ
+
+次に、Zeabur でプロジェクトをデプロイし、「設定」→「サービス名」に移動して、デプロイしたいサービス名に変更します。例えば `storage`、`discord` または `frontend` に：
+
+![specify-service-name](/deploy/dockerfile/specify-service-name.png)
+
+その後、「Redeploy」をクリックしてプロジェクトを再デプロイし、希望のサービスをデプロイすることができます。また、[トリガーパス](./watch-paths) と組み合わせて使用し、関連するファイルのみの修正時にデプロイをトリガーすることもできます。
+
+## Docker Compose
+
+Zeabur は現在、`Dockerfile` のデプロイ方法のみをサポートしており、Docker Compose は提供していません。
+
+{/* converted with zhconvert.org | revision dict-a1f426e3-r1031 */}

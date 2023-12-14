@@ -1,0 +1,101 @@
+---
+title: デプロイ MySQL サービス
+ogImageTitle: デプロイ MySQL サービス
+ogImageSubtitle: Zeabur での MySQL サービスのワンクリックデプロイ
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# MySQL サービス
+
+Zeaburは、ワンクリックで MySQL サービスをデプロイできる機能を提供しており、Zeabur上で簡単に MySQL データベースをデプロイできます。
+
+<Callout type="info" emoji="ℹ️">
+  現在、Zeaburで提供されている MySQL のバージョンは `8.0` です。
+  将来的には、さらに多くの MySQL サービスのバージョンが提供される予定です。
+</Callout>
+
+## MySQL サービスのデプロイ
+
+プロジェクト内で、**新しいサービスをデプロイ** をクリックし、**その他のサービスをデプロイ** から **MySQL サービスをデプロイ** を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+![deploy-mysql](/databases/deploy-mysql.zh-CN.png)
+
+デプロイをクリックすると、Zeaburが自動的に MySQL サービスをデプロイします。
+
+## 環境変数
+
+MySQL サービスをデプロイした後、Zeaburは関連する環境変数を他のサービスに自動的に注入します。
+
+ - `MYSQL_HOST`
+ - `MYSQL_PORT`
+ - `MYSQL_USERNAME`
+ - `MYSQL_PASSWORD`
+
+時折、上記の環境変数の代わりに、自分で `DATABASE_URL` を追加することがあります。例えば：
+
+```bash copy
+mysql://<MYSQL_USERNAME>:<MYSQL_PASSWORD>@<MYSQL_HOST>:<MYSQL_PORT>/<DATABASE_NAME>
+```
+
+ここでの `<DATABASE_NAME>` は、自分で追加したデータベース名です。
+
+## データベースの追加
+
+Zeaburのデフォルトのデータベースとユーザーはどちらも `root` です。最初に自分でデータベースを追加する必要があります。以下の方法を使用して追加できます。
+
+ - [MySQL Workbench](#mysql-workbench)
+ - [mysqlsh](#mysqlsh)
+
+### MySQL Workbench
+
+[MySQL Workbench](https://www.mysql.com/products/workbench/) は、MySQL データベースのデザイン、メンテナンス、管理に使用できるデータベース可視化ツールです。
+使いやすいインターフェースを備えており、クエリの実行、データベースのバックアップとリストア、およびデータベースの診断とパフォーマンス最適化などができます。
+
+[MySQL Workbench](https://www.mysql.com/products/workbench/) を使用して、Zeaburにデプロイされた MySQL データベースに接続できます。
+
+まず、**MySQL connections の隣のボタン** をクリックして新しい接続を追加する必要があります。
+
+![mysql-workbench](/databases/mysql/mysql-workbench.png)
+
+そして、パスワードを保存するために **Store in Keychain** をクリックします。
+
+![mysql-workbench-connect](/databases/mysql/mysql-workbench-connect.png)
+
+その後、Query Editorで以下のSQL構文を使用してデータベースを追加できます。
+
+```sql copy
+CREATE DATABASE <DATABASE_NAME>
+```
+
+![mysql-workbench-create-db](/databases/mysql/mysql-workbench-create-db.png)
+
+### mysqlsh
+
+[mysqlsh](https://dev.mysql.com/doc/mysql-shell/8.0/en/) は高度なコマンドラインツールで、MySQL データベースの管理と操作に使用できます。JavaScript、Python、SQLなどの多くのプログラミング言語をサポートしており、使用者が自分の得意な言語でスクリプトを作成できます。
+
+まず、Zeaburにデプロイされた MySQL データベースに接続するには、次のコマンドを使用できます。
+
+```bash copy
+mysqlsh --uri mysql://root:<MYSQL_PASSWORD>@<MYSQL_HOST>:<MYSQL_PORT>
+```
+
+そして、SQLモードに切り替えます。
+
+```bash copy
+
+\sql
+```
+
+
+以下のコマンドを使用してデータベースを作成します。
+
+```sql copy
+
+create database <DATABASE_NAME>;
+```
+
+
+![mysqlsh-create-db](/databases/mysql/mysqlsh-create-db.png)

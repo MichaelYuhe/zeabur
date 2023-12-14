@@ -1,0 +1,63 @@
+---
+title: Zeabur に Likit をデプロイする
+ogImageTitle: Zeabur に Likit をデプロイする
+ogImageSubtitle: Zeabur に Likit をデプロイする
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# Zeabur に Likit をデプロイする
+
+[Likit](https://github.com/CorrectRoadH/Likit) Likit は、投票、いいね、カウントなどの機能を提供する Backend as a Service です。
+
+この記事では、Zeabur に Likit をデプロイする方法を紹介します。
+
+## 方法 1: テンプレートからデプロイ（推奨）
+
+Likit 用のテンプレートを用意しています。下のボタンをクリックするだけで、あなたのための Likit サービスを簡単にデプロイできます。
+
+[![Zeabur にデプロイ](https://zeabur.com/button.svg)](https://zeabur.com/templates/KZOLHA?referralCode=CorrectRoadH)
+
+## 方法 2: マーケットプレイスからデプロイ
+
+### ステップ 1: プロジェクトの作成
+
+まずは、プロジェクトを作成する必要があります。[プロジェクトページ](https://dash.zeabur.com/projects)を開くと、プロジェクトのリストが表示されます。
+リストの末尾にある「プロジェクトの作成」ボタンをクリックします。
+
+### ステップ 2: Postgres サービスのデプロイ
+
+Likit サービスを作成する前に、まずは Postgres サービスをデプロイする必要があります。
+
+「サービスの作成」をクリックし、「Prebuilt」を選択します。そこで、PostgreSQL を見つけることができます。
+
+![Postgres のデプロイ](/marketplace/likit/likit-postgres.png)
+
+### ステップ 3: Redis サービスのデプロイ
+
+Likit サービスを作成する前に、まずは Redis サービスをデプロイする必要があります。
+
+「サービスの作成」をクリックし、「Prebuilt」を選択します。そこで、Redis を見つけることができます。
+
+![Redis のデプロイ](/marketplace/likit/likit-redis.png)
+
+### ステップ 4: Prebuilt Marketplace からのデプロイ
+
+「サービスの作成」をクリックし、「Prebuilt」を選択します。そこで、Likit を見つけることができます。
+
+それをクリックするか、確認ボタンを押すと、Likit のデプロイが開始されます。
+
+### ステップ 5: ドメインのバインド
+
+サービスの起動を待っている間、そのサービスにドメインをバインドすることができます。
+このドメインは、あなた自身のドメインまたは Zeabur が提供する無料のドメインであることができます。
+
+サービスページの「ドメイン」タブを開き、「ドメインの生成」または「カスタムドメイン」をクリックします。
+
+ドメインのバインディングの詳細については、[ドメインのバインド](/deploy/domain-binding)を参照してください。
+
+### ステップ 6: Likit の使用開始
+
+ドメインをバインドしたら、そのドメインをクリックして Likit のコントロールパネルに入り、Likit を使用することができます。
+
+![Likit プレビュー](/marketplace/likit/likit.png)

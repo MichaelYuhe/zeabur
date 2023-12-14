@@ -1,0 +1,61 @@
+---
+ogImageTitle: Spring Boot プロジェクトのデプロイ
+ogImageSubtitle: あなたの Spring Boot プロジェクトをZeaburにデプロイする
+---
+
+# Spring Boot プロジェクトのデプロイ
+
+この記事では、[Spring Boot](https://spring.io/projects/spring-boot) プロジェクトを Zeabur 上にデプロイする方法を学ぶことができます。
+
+## 第一步：環境設定
+
+ローカルでビルドをテストして、プロジェクトが正常に動作することを確認できるように、以下の JDK バージョンを使用できます：
+
+- 19
+- 17（デフォルト）
+- 11
+- 8
+- 7
+
+### JDK バージョンの指定
+
+`pom.xml` または `build.gradle` で JDK バージョンを指定することができます。
+
+例えば、Maven を使用している場合は、`pom.xml` に以下の設定を追加してください：
+
+```xml
+<properties>
+    <java.version>11</java.version>
+</properties>
+```
+
+Gradle を使用している場合は、`build.gradle` に以下の設定を追加してください：
+
+```groovy
+sourceCompatibility = 11
+```
+
+## 第二步: プロジェクトの作成（オプション）
+
+まず、ローカル開発環境で Spring Boot プロジェクトを初期化する必要があります。これは [Spring Boot 公式ドキュメント](https://spring.io/quickstart) の指示に従って行うことも、お好みの IDE（例えば [IntelliJ IDEA](https://www.jetbrains.com/idea/) や [Eclipse](https://www.eclipse.org/) 等）を使用して Spring Boot プロジェクトを初期化することもできます。
+
+**Gradle 配備ツール**を使用する場合は、Gradle プロジェクトで `build.gradle` ファイルを開き、以下の設定を追加してください：
+
+```groovy
+jar {
+    enabled = false
+    manifest {
+        attributes 'Main-Class': 'com.example.demo.DemoApplication' // <-- ここにあなたのプロジェクトのパッケージ名とクラス名に置き換えてください
+    }
+}
+```
+
+プロジェクトを作成したら、Git リポジトリを初期化して GitHub にデプロイしてください。
+
+## 第三步：Spring Boot プロジェクトのデプロイ
+
+プロジェクト内で、**Deploy service** または **Add new service** ボタンをクリックし、**Deploy your source code**を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+デプロイしたい Spring Boot コードリポジトリを検索してインポートをクリックすると、Spring Boot アプリケーションの自動デプロイが開始されます。

@@ -1,0 +1,40 @@
+---
+ogImageTitle: Flaskプロジェクトのデプロイ
+ogImageSubtitle: ZeaburにあなたのFlaskプロジェクトをデプロイする
+---
+
+# Flaskプロジェクトのデプロイ
+
+この記事では、ZeaburでのFlaskアプリケーションのワンクリックデプロイ方法について説明します。
+
+## 1. Flaskプロジェクトの作成
+
+[flask-template](https://github.com/zeabur/flask-template) でFlaskのサンプルを確認できます。サンプルプロジェクトは非常にシンプルで、文字列を返すルートを含んでいます。
+
+```python
+from flask import Flask
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return "Welcome, this is a Flask app deployed on Zeabur"
+
+if __name__ == '__main__':
+    app.run(debug=True, port=os.getenv("PORT", default=5000), host='0.0.0.0')
+```
+
+Zeaburでは、必要な転送ポートを環境変数 `PORT` から取得します。したがって、この環境変数を設定し、アプリケーションで `os.getenv` などを使用してポート番号を設定する必要があります。
+
+Zeaburでは、Flaskアプリケーションを起動するために `python app.py` または `python main.py` を使用します。したがって、プロジェクトにはこれらのいずれかのファイルと、Flaskアプリケーションの実行に必要な命令が含まれている必要があります。
+
+プロジェクトで必要な外部パッケージを requirements.txt、Pipfile、またはPipfile.lockファイルに記述しておく必要があります。これにより、Zeaburがビルド前に自動的にインストールできるようになります。
+
+## 2. Flaskプロジェクトのデプロイ
+
+プロジェクト内で、**Deploy service** または **Add new service** ボタンをクリックし、**Deploy your source code**を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+デプロイしたいFlaskプロジェクトのコードリポジトリを検索し、`import`をクリックすると、Flaskプロジェクトが自動的にデプロイされます。

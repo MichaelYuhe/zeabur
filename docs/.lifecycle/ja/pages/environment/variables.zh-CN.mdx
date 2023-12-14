@@ -1,0 +1,62 @@
+---
+title: 変数の追加
+ogImageTitle: 変数の追加
+ogImageSubtitle: Zeabur に変数を追加する
+---
+
+# 変数の追加
+
+Zeabur では、変数を追加し、サービスに自動的に注入することができます。
+
+## 追加、編集、変更
+
+サービスを選択し、**変数** ページに移動し、**変数を追加** をクリックして変数を追加できます。
+
+![変数の追加](/environment/add-variables.zh-CN.png)
+
+Zeabur は、以下の変数を自動的に注入します：
+
+- `<YOUR_SERVICE_NAME>_HOST`：サービスの内部ネットワーク通信のホスト名
+
+- `PORT`：サービスの外部ポート
+
+- その他の関連するサービス（例：[PostgreSQL](/databases/postgresql)、[Redis](/databases/redis)など）も関連する変数を自動的に注入します。
+
+そのため、手動で変数を自分のサービスに追加する必要はありません。
+
+![データベースの変数](/environment/db-env.zh-CN.png)
+
+変数にマウスを重ねると、変数を編集または削除することができます。
+
+![ホバー効果](/environment/var-hover.png)
+
+右上のチェックボックスをクリックすると、リストビューに切り替えることができます。
+
+![リストビュー](/environment/var-list-view.png)
+
+編集アイコンをクリックすると、変数の値を編集できます。
+
+![変数の編集](/environment/var-edit.png)
+
+## 一括編集
+
+複数の変数を一度に追加したい場合は、一括編集機能を使用できます。
+
+上部の **元の環境変数を編集** ボタンをクリックすると、一括編集モードに入り、`.env` ファイルの編集方法でサービスの環境変数を一括設定できます。
+
+![一括編集](/environment/var-raw-edit.png)
+
+## 変数の参照
+
+Zeabur では、他の変数を参照する方法として変数の参照ができます。
+
+変数を設定する際に、テンプレート言語の形式で参照することで変数を参照できます：
+
+```bash
+# 例えば、次のように変数を設定できます
+AUTH_INFOR=${USERNAME}:${PASSWORD}
+```
+
+![変数の参照](/environment/var-reference.png)
+
+これにより、`USERNAME` と `PASSWORD` の値が自動的に `AUTH_INFOR` に組み込まれます。

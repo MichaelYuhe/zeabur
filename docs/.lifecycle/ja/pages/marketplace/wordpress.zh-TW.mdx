@@ -1,0 +1,95 @@
+---
+title: WordPressサービスのデプロイ
+ogImageTitle: WordPressサービスのデプロイ
+ogImageSubtitle: ZeaburでのWordPressサービスの簡単なデプロイ
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# WordPressサービスのデプロイ
+
+[WordPress](https://wordpress.org/)は、誰でも簡単に美しいウェブサイト、ブログ、またはアプリを構築できるオープンソースソフトウェアです。
+
+この記事では、Zeaburでサービスマーケットを利用して、自分自身のWordPressサービスを簡単にデプロイし、独自のドメインをバインドする方法を説明します。
+
+## ステップ1：プロジェクトの作成
+
+まず、Zeaburでプロジェクトを作成する必要があります。[プロジェクトリスト](https://dash.zeabur.com/projects)ページに移動して、多くのプロジェクトの中から「プロジェクトを作成」ボタンを見つけることができます。
+
+## ステップ2：MySQLサービスのデプロイ
+
+WordPressサービスを作成する前に、まずMySQLサービスをデプロイする必要があります。
+
+「サービスを作成」をクリックし、「サービスマーケット」を選択し、MySQLをリストから選択します。
+
+![MySQLのデプロイ](/marketplace/wordpress/deploy-mysql.png)
+
+このアイテムをクリックしてデプロイを完了します。
+
+## ステップ3：データベースの作成
+
+WordPressサービスを正常に動作させるためには、MySQLデータベース内に`wordpress`という名前のデータベースを作成する必要があります。
+
+任意のMySQLクライアントを使用して、MySQLサービスに接続してください。この記事では、[mysqlsh](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysqlsh.html)を使用します。
+
+![MySQL接続情報ブロック](/marketplace/wordpress/mysql-connect.png)
+
+Zeaburコンソールで、MySQLサービスの「接続」セクションで対応するmysql接続コマンドや他の接続情報を見つけることができます。
+
+例えば：
+
+```bash
+mysqlsh --host=infra.zeabur.com --port=11451 --user=root --password=wordpress-demo
+```
+
+端末に入力する前に、`mysqlsh`の後ろに `--sql` を追加してください：
+
+```bash
+mysqlsh --sql --host=infra.zeabur.com --port=11451 --user=root --password=wordpress-demo
+```
+
+次に、以下のコマンドをmysqlshに入力して`wordpress`データベースを作成してください：
+
+```sql
+CREATE DATABASE wordpress;
+```
+
+`Query OK, 1 row affected (0.0573 sec)`のようなメッセージが表示されたら、<kbd>Ctrl</kbd> (<kbd>Control</kbd>) + <kbd>D</kbd>を押して終了できます。
+
+![MySQLの操作](/marketplace/wordpress/mysql-operation.png)
+
+## ステップ3：WordPressサービスのデプロイ
+
+Zeaburコンソールで、「サービスを作成」をクリックし、「サービスマーケット」を選択し、WordPressをリストから選択します。
+
+![WordPressサービスのデプロイ](/marketplace/wordpress/deploy-wordpress.png)
+
+このアイテムをクリックしてデプロイを完了します。
+
+<Callout>
+注意が必要なのは、WordPressをデプロイする前にMySQLサービスをすでにデプロイしていた場合、ZeaburはWordPressサービスにMySQLの関連環境変数を自動的にインジェクトするため、データベース情報を手動で構成する必要はありません。
+
+WordPressを先にデプロイし、MySQLをまだデプロイしていない場合は、MySQLサービスをデプロイした後にWordPressサービスを再起動して、WordPressが正しいデータベース接続情報を取得できるようにする必要があります。
+</Callout>
+
+## ステップ4：ドメインのバインディング
+
+Zeaburコンソールで、WordPressサービスの「ドメイン」セクションで、独自のドメインやZeaburが提供する無料のドメインをバインドすることができます。
+
+![WordPressサービスのドメインセクション](/marketplace/wordpress/wordpress-domain.png)
+
+サービスにドメインをバインドする方法については、[ドメインのバインド](../deploy/domain-binding)をご覧ください。
+
+## ステップ5：ログインしてWordPressを設定する
+
+バインドが完了すると、ドメインをクリックしてWordPressのインストーラーにアクセスできます。まず、ここで言語を選択し、該当言語の "Continue" をクリックしてください：
+
+![WordPressのインストール、言語を選択するステップ](/marketplace/wordpress/wordpress-inst-step1.png)
+
+それから、手順に従ってインストールしてください：
+
+![WordPressのインストール、パスワードとサイト情報を設定](/marketplace/wordpress/wordpress-inst-step2.png)
+
+この画面を見ると、インストールが完了しました。
+
+![WordPressのインストール、インストールの完了](/marketplace/wordpress/wordpress-inst-step3.png)

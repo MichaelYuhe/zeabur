@@ -1,0 +1,48 @@
+---
+title: バックアップサービス
+ogImageTitle: バックアップサービス
+ogImageSubtitle: サービスをバックアップ
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# バックアップサービス
+
+本番環境や開発プロセス中に、アプリケーションの堅牢性と信頼性を高めるためにサービスのバックアップを行う必要があります。
+Zeabur上でデプロイされた [Prebuilt Service](/prebuilt/intro) に関しては、バックアップの作成と復元を簡単に行える方法を提供しています。
+
+<Callout>
+    上記で言及されている [Prebuilt Service](/prebuilt/intro) は、サービスに属するサブカテゴリであり、[Prebuilt Service](/prebuilt/intro) はステートフルであるため、`Git Service` はステートレスで、バックアップ機能をサポートしていません。
+</Callout>
+
+## ステップ1：サービスを一時停止する
+
+バックアップを行う前に、データ損失を防ぐためにサービスを一時停止してください。サービスが稼働中の場合、システムはサービスを一時停止するようにプロンプトします。
+
+![backup-not-suspend](/deploy/backup/backup-not-suspend.png)
+
+この時点で **Settings** セクションを開き、`Danger Zone` エリアを見つけ、「Suspend Service」ボタンをクリックしてサービスを一時停止します。
+
+![suspend](/deploy/backup/backup-suspend-service.png)
+
+## ステップ2：バックアップ設定を開く
+
+バックアップを行いたいサービスを選択し、**Backup** セクションを展開します。すると、サービスのバックアップを作成するためのボタンが表示されます。
+
+![button](/deploy/backup/backup-not-suspend.png)
+
+## ステップ3：バックアップを作成する
+
+**Backup** ボタンをクリックすると、システムはサービスのバックアップを作成します。この処理には時間がかかる場合があります。
+
+![created](/deploy/backup/backup-created.png)
+
+## ステップ4：バックアップをダウンロードする
+
+しばらく待った後、バックアップの作成が完了したことが **Backup** セクションに `SUCCESS` と表示されます。ここをクリックすると、バックアップファイルをダウンロードできます。
+
+![success](/deploy/backup/backup-success.png)
+
+ダウンロードしたファイルを取得した後、それを解凍して内容をチェックすることができます。
+
+![files](/deploy/backup/backup-files.png)

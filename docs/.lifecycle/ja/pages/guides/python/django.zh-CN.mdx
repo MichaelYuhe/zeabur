@@ -1,0 +1,63 @@
+---
+ogImageTitle: Django プロジェクトをデプロイする
+ogImageSubtitle: あなたのDjangoプロジェクトをZeaburにデプロイする
+---
+
+# Django プロジェクトをデプロイする
+
+この記事では、Zeabur上であなたのDjangoプロジェクトをデプロイする方法を学びます。
+
+## 第一ステップ：Djangoをインストールする
+
+始める前に、あなたのコンピューターにPythonがインストールされていることを確認してください。もしインストールされていなければ、[Python環境](https://www.python.org/downloads/)をインストールしてください。
+
+Python環境が存在するかどうかを確認します。
+
+```bash
+python --version
+```
+
+ターミナルを開き、以下のコマンドを実行してインストールしてください。
+
+```bash
+pip install django
+```
+
+## 第二ステップ：Djangoプロジェクトを作成する
+
+`django-admin`コマンドを使って新しいDjangoプロジェクトを作成します。`project_name`をあなたのプロジェクト名に置き換えてください。
+また、[Django-template](https://github.com/zeabur/django-template)を使用できます。Djangoテンプレートを使用した後は、第二ステップをスキップできます。
+
+```bash
+django-admin startproject project_name
+```
+
+## 第三ステップ：Djangoプロジェクトを実行する
+
+Djangoプロジェクトを開いて実行し、ローカルでの起動が成功したかどうかを確認します。
+
+```bash
+cd project_name
+python manage.py runserver
+```
+
+## 第四ステップ：Djangoプロジェクトをデプロイする
+
+Gitリポジトリを初期化してGitHubにデプロイします。プロジェクト内で、**デプロイサービス**または**新しいサービスを追加する**ボタンをクリックし、**ソースコードをデプロイする**を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+デプロイが成功すると、ウェブサイトが成功した画面が表示されます。
+
+![django-web](/framework/django/django.png)
+
+エラーが発生した場合は、プロジェクト設定を確認してください：
+
+- `requirements.txt`が存在するか確認してください。このファイルの主な目的は、プロジェクトで必要とされるすべてのPythonパッケージとそのバージョンをリストアップすることです。
+  これは異なる開発環境や本番環境で同じ依存関係とバージョンを保持することを保証するために使用されます。もし設定されていない場合は、プロジェクト内で以下の指令を使用し、再度GitHubへプッシュしてください。
+
+```bash
+pip freeze > requirements.txt
+```
+
+- `settings.py`の`ALLOWED_HOSTS`が設定されているかを確認してください。この属性は、Djangoアプリケーションにアクセスできるドメイン名を含むPythonリストです。試験目的であれば`ALLOWED_HOSTS = ['*']`を使って、すべてのネットワークからのドメイン名を許可できます。

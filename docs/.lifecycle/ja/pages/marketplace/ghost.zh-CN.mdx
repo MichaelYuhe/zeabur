@@ -1,0 +1,70 @@
+---
+title: Deploy Ghost Service
+ogImageTitle: Deploy Ghost Service
+ogImageSubtitle: Deploy Ghost service with one click on Zeabur
+
+
+import { Callout } from 'nextra-theme-docs'
+
+# Deploy Ghost Service
+
+[Ghost](https://ghost.org/) is a powerful application suitable for new media creators to publish, share, and grow their content business.
+
+This article will teach you how to easily deploy your own Ghost service on Zeabur through the service marketplace, and bind your own domain.
+
+## Step 1: Create a Project
+
+First, we need to create a project on Zeabur. Go to the [Project List](https://dash.zeabur.com/projects) page, where you will see many of your projects, and the "Create Project" button is at the end of all projects.
+
+## Step 2: Deploy MySQL service
+
+Currently, Ghost services in Zeabur only support the MySQL database. Before creating a Ghost service, you need to deploy a MySQL service (the database will be automatically created by the Ghost service).
+
+Click on "Create Service" and select "Service Marketplace", where you will find MySQL in the list.
+
+![Deploy MySQL](/marketplace/ghost/deploy-mysql.png)
+
+Click on the project to complete the deployment.
+
+## Step 3: Deploy Ghost Service
+
+In the Zeabur console, click on "Create Service" and select "Service Marketplace", where you will find Ghost in the list.
+
+![Deploy Ghost Service](/marketplace/ghost/deploy-ghost.png)
+
+Click on the project to complete the deployment.
+
+<Callout>
+Note that because we have already deployed the MySQL service before deploying Ghost, Zeabur
+will automatically inject the relevant environment variables of the MySQL into the Ghost
+service, so there is no need to manually configure the database information.
+
+If you deployed Ghost first without deploying MySQL, you need to restart the Ghost service after deploying the MySQL
+service in order for Ghost to obtain the correct database connection information.
+</Callout>
+
+After deployment, immediately click the pause button to pause the Ghost service, then we will proceed to set up the domain.
+
+![Pause Ghost Service](/marketplace/ghost/ghost-suspend.gif)
+
+## Step 4: Bind a Domain
+
+In the Zeabur console, in the "Domain" section of the Ghost service, you can bind a domain to it, which can be your own domain or a free domain provided by Zeabur.
+
+![Domain section of Ghost service](/marketplace/ghost/ghost-domain.png)
+
+For information on how to bind a domain to your service, please refer to [Domain Binding](../deploy/domain-binding).
+
+After adding the domain, open the "Environment Variables" and modify `url` to the domain you just bound. After the modification, Ghost will automatically restart.
+
+![Environment Variables section of Ghost service](/marketplace/ghost/ghost-env.png)
+
+## Step 5: Log in and configure Ghost
+
+After binding, you can click on the domain to access the homepage of Ghost, and add `/ghost` at the end of the domain to access the administrator settings interface of Ghost.
+
+![Administrator settings interface of Ghost service](/marketplace/ghost/ghost-admin-config.png)
+
+After completing the configuration, you can start your writing journey.
+
+![Ghost admin dashboard](/marketplace/ghost/ghost-admin-dashboard.png)

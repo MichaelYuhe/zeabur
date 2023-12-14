@@ -1,0 +1,26 @@
+---
+title: インターネットサービス
+ogImageTitle: インターネットサービス
+ogImageSubtitle: プロジェクト内で相互接続できるネットワーク
+---
+
+# インターネットサービス
+
+サービス内ネットワーキング（プライベートネットワーキング）では、サービスは固定のホスト名を使用して、同じプロジェクトに属するネットワークに接続できます。
+
+## ホスト名の確認
+
+"Networking"セクションを開くと、「Private」の場所でホスト名を確認できます。
+
+![ホスト名の検索](/deploy/private-networking/find-hostname.png)
+
+## サービスへの接続
+
+他のサービスがこのサービスに接続する場合（この例ではPostgreSQL）、ホスト名を使用して接続します。また、[PostgreSQLのドキュメント](/marketplace/postgresql)によると、そのポートは`POSTGRES_PORT`環境変数に挿入されるため、接続情報は次のように入力します。
+
+- ホスト名：前の手順で確認したホスト名、この例では `postgresql.zeabur.internal` です。
+- ポート：`POSTGRES_PORT`環境変数から値を取得し、[デフォルトは5432](https://github.com/zeabur/zeabur/blob/bd565389cf1868a917333d0f74003b4aad6ef0ce/prebuilts/postgresql.toml#L14)です。
+
+## 注意事項
+
+- サービス名を変更しても、**ホスト名は変更されません**。

@@ -1,0 +1,55 @@
+---
+title: Focalboardのデプロイ
+ogImageTitle: Focalboardのデプロイ
+ogImageSubtitle: ZeaburでのFocalboardのデプロイ
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# ZeaburでのFocalboardのデプロイ
+
+[Focalboard](https://www.focalboard.com/)は、オープンソースかつ多言語対応のセルフホステッド型プロジェクト管理ツールであり、Trello、Notion、Asanaの代替となります。
+
+この記事では、Zeabur上でFocalboardをデプロイする方法を紹介します。
+
+## 方法1: テンプレートからのデプロイ(推奨)
+
+Focalboardにはテンプレートが用意されています。以下のボタンをクリックするだけで、簡単にFocalboardサービスをデプロイできます。
+
+[![Zeaburでデプロイ](https://zeabur.com/button.svg)](https://zeabur.com/templates/SU7RTR)
+
+## 方法2: Marketplaceからのデプロイ
+
+### ステップ1: プロジェクトの作成
+
+まずはプロジェクトを作成する必要があります。[プロジェクトページ](https://dash.zeabur.com/projects)を開くと、プロジェクトのリストが表示されます。
+リストの末尾にある "プロジェクトを作成" ボタンをクリックします。
+
+### ステップ2: Prebuilt Marketplaceからのデプロイ
+
+プロジェクトページに移動すると、"新しいサービスをデプロイ" ボタンが表示されます。それをクリックし、**Prebuilt**を選択します。Focalboardがリストに表示されます。
+
+![Focalboardのデプロイ](/marketplace/focalboard/deploy.png)
+
+それを選択するかEnterキーを押すと、Focalboardのデプロイが開始されます。
+
+<Callout>
+    Focalboardサービスの起動まで、約1分ほどお待ちいただく場合があります。
+</Callout>
+
+### ステップ3: ドメインのバインディング
+
+サービスの起動を待っている間に、そのサービスにドメインをバインドできます。
+バインドするドメインは独自のドメインでも、Zeaburが提供する無料のドメインでも構いません。
+
+サービスページの "ドメイン" タブを開き、"ドメインの生成"または"カスタムドメイン"をクリックします。
+
+ドメインのバインディングについての詳細は、[ドメインのバインディング](../deploy/domain-binding.zh-CN.mdx)を参照してください。
+
+![ドメインのバインディング](/marketplace/focalboard/domain.png)
+
+### ステップ4: Focalboardの使用開始
+
+ドメインがバインドされたら、そのドメインをクリックしてFocalboardのコントロールパネルにアクセスし、Focalboardの利用を開始できます。
+
+![Focalboardのプレビュー](/marketplace/focalboard/focalboard.png)

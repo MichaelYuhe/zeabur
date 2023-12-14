@@ -1,0 +1,123 @@
+---
+ogImageTitle: 部署Qwikプロジェクト
+ogImageSubtitle: ZeaburでのQwikプロジェクトのデプロイ方法
+---
+
+# 部署Qwikプロジェクト
+
+この記事では、[Qwik](https://qwik.builder.io)プロジェクトをZeaburにデプロイする方法について説明します。
+
+## プロジェクトの初期化
+
+まず最初に、ローカル開発環境でQwikプロジェクトを初期化する必要があります。この手順は[Qwik公式ドキュメント](https://qwik.builder.io/docs/getting-started/)に従って進めることができます。
+
+```bash
+npm create qwik@latest
+```
+
+初期化が完了したら、次のような結果が表示されます：
+
+```bash
+💫 Let's create a Qwik app 💫
+
+✔ Project name … qwik-app
+✔ Select a starter › Basic
+
+🦄  Success!  Project created in portfolio directory
+
+🐰 Next steps:
+   cd qwik-app
+   npm install
+   npm start
+
+💬 Integration? Add Netlify, Cloudflare, Tailwind...:
+   npm run qwik add
+
+💬 Questions? Start the conversation at:
+   https://qwik.builder.io/chat
+   https://twitter.com/QwikDev
+
+📺 Presentations, Podcasts and Videos:
+   https://qwik.builder.io/media/
+```
+
+そして、現在のディレクトリに`qwik-app`フォルダが作成されます。
+
+## プロジェクトの開発
+
+初期化が完了したら、`qwik-app`フォルダに移動し、`npm start`を実行して開発サーバーを起動できます。
+
+```bash
+cd qwik-app
+npm start
+```
+
+次のような結果が表示されるはずです：
+
+```bash
+ VITE v3.1.1  ready in 140 ms
+
+  ➜  Local:   http://localhost:5174/
+  ➜  Network: use --host to expose
+```
+
+これで、Qwikプロジェクトの開発を開始できます。
+
+## アダプターパッケージのインストール
+
+ZeaburでQwikプロジェクトを動作させるために、デプロイする前にQwikのNode.js（Express）アダプターパッケージをインストールする必要があります。
+
+```bash
+npm run qwik add express
+```
+
+インストールが完了すると、次のような結果が表示されます：
+
+```text
+🦄  Success!  Added express to your app
+
+📚 Relevant docs:
+   https://qwik.builder.io/qwikcity/adaptors/node/
+   https://expressjs.com/
+
+💬 Questions? Start the conversation at:
+   https://qwik.builder.io/chat
+   https://twitter.com/QwikDev
+```
+
+## ローカルでのビルドテスト
+
+アダプターパッケージをインストールしたら、ローカルでビルドテストを実行して、プロジェクトが正常に動作することを確認できます。
+
+```bash
+npm run build
+```
+
+問題がなければ、プロジェクトディレクトリに`dist`および`server`という2つのフォルダが追加されるはずです。
+
+次に、次のコマンドを入力してローカルサーバーを起動し、ブラウザで`http://localhost:3000`を開いてプロジェクトが正常に動作するか確認してください：
+
+```bash
+node server/entry.express.js
+```
+
+次に、ブラウザで`http://localhost:3000`にアクセスして、ページが正常に表示されることを確認できます。
+
+![Qwikデフォルトページ](/framework/qwik/localhost.png)
+
+
+## プロジェクトのデプロイ
+
+ローカルでのビルドテストに問題がなければ、GitHubでコードリポジトリを作成し、現在のコードをプッシュできます。
+
+最後に、Zeaburのプロジェクトページに戻り、**Deploy service**または**Add new service**ボタンをクリックし、**Deploy your source code**を選択します。
+
+![デプロイ](/deploy/common/select-service.en-US.png)
+
+作成したコードリポジトリを検索し、`import`をクリックすると、Qwikアプリケーションが自動的にデプロイされます。
+
+![building](/framework/qwik/building.png)
+
+デプロイが完了したら、[綁定網域](../../deploy/domain-binding) ドキュメントを参照し、Qwikプロジェクトを外部からアクセス可能な公開ドメインにバインドする方法について確認してください。
+
+{/* converted with zhconvert.org | revision dict-a1f426e3-r1031 */}

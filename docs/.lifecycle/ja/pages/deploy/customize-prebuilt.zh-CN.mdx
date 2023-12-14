@@ -1,0 +1,70 @@
+---
+title: カスタム Prebuilt
+ogImageTitle: カスタム Prebuilt
+ogImageSubtitle: Zeabur で独自の Docker イメージをデプロイする
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# カスタム Prebuilt
+
+Zeabur にはコミュニティによって提供される多くの Prebuilt テンプレート（Prebuilt マーケットプレイス）が含まれていますが、
+独自の Docker イメージをデプロイしたり、Stateful サービス（ストレージ領域）を設定したり、
+さらに高度な環境変数機能（他のサービスに変数を露出するなど）を使用したりする必要があるかもしれません。
+
+そうした要求に対応するために、Zeabur にはカスタム Prebuilt 機能が用意されています。
+
+## カスタムページを開く
+
+<Callout>
+    カスタム機能を使用するには、開発者プラン以上にアップグレードする必要があります。
+</Callout>
+
+ここでは、簡単な Prebuilt サービスを作成し、Zeabur にデプロイする方法を説明します。
+
+プロジェクトを作成した後、「サービスの作成」→「Prebuilt」→「カスタム」とクリックしてください：
+
+![カスタム Prebuilt ページを開く](/deploy/customize-prebuilt/open-customize.png)
+
+すると、Prebuilt のカスタムページが表示されます。
+
+![Prebuilt カスタムページ](/deploy/customize-prebuilt/prebuilt-config-page.png)
+
+## 例：MariaDB のデプロイ
+
+次の例では、Prebuilt のカスタム機能を使用して MariaDB をデプロイする方法を紹介します。
+
+![MariaDB 構成例](/deploy/customize-prebuilt/mariadb-config-example.png)
+
+まず、**Service Name** に "MariaDB" と入力し、**Service Icon** には MariaDB の
+Docker Hub の画像リンクを貼り付けます。実際、これらの名前やアイコンは任意に定義できますが、
+サービスの用途を把握しやすくするために、わかりやすい名前とアイコンを使用することが役立ちます。**Image** は、Docker イメージの参照であり、`docker pull mariadb:11` での `mariadb:11` です。
+
+**Data Path** は、サービスを再起動してもデータが消えないパスです。MariaDB の場合、データベースファイルは `/var/lib/mysql` に存在するため、MariaDB サービスのデータベースファイルが再起動後も消えないように、Data Path を `/var/lib/mysql` に設定します。Data Path は Docker では "Volume" や "Persistent Volume (PV)" としても知られています。
+
+**Port** には MariaDB のポートを記入して、他のサービス（または自分自身）が MariaDB に接続できるようにします。MariaDB は通常、MySQL と同様に `3306` でリッスンするため、3306 を記入します。また、MariaDB はTCP接続を使用するため、右側の接続ポートの種類をHTTPからTCPに変更します。左側の名前は任意に定義できますが、ここで設定した名前は環境変数で使用されるため、空白や不要な記号がないシンプルな名前であることが重要です。この例では `database` を使用しています。
+
+最後に、**Environment Variables** です。フィールド内の`${CONTAINER_HOSTNAME}`などの変数は、自分のサービスの他の変数、プロジェクトの他の公開された変数、および特別な変数の値を参照できます。
+上記の画像の例を使用すると、
+
+- `${MARIADB_ROOT_PASSWORD}`: このサービスの `MARIADB_ROOT_PASSWORD` の変数を参照します。この例では、`${PASSWORD}` になります。
+- `${PASSWORD}`：このサービスでZeaburが生成した一意のランダムなパスワードを参照します。
+
+ここでこのフィールドにチェックを入れて `Exposed` にした他のサービスでこれらの変数を使用できます。 `${MARIADB_USERNAME}`、`${MARIADB_PASSWORD}`など。`Readonly` にチェックを入れることで、他の人が「変数」部分でこの変数の値を誤って編集することを防ぐことができます。
+
+すべてのフィールドを確認したら、「作成」をクリックして MariaDB を作成します。
+
+## 各フィールドの説明
+
+- **Service Name**：この Prebuilt サービスの名前。
+- **Service Icon**：この Prebuilt サービスのアイコン。
+- **Data Path**：Prebuilt がデータを保存し続けるためのパス。空白の場合、このスペースは開かれず、データのパフォーマンス低下が軽減されます。
+- **Image**：Prebuilt サービスのDockerイメージのリファレンス。たとえば、`mariadb:11` です。
+- **Ports**：公衆ネットワークまたは他のサービスに外部公開する接続ポート。
+    - ポート名はこの接続ポートを示すために使用されます。英字、数字、ハイフン（ハイフン）のみを使用できます。
+    - ポートタイプは、接続ポートのタイプを示し、現在はTCP、UDP、HTTPがサポートされています。
+        - HTTPのみがドメインにバインドできます。
+- **Environment Variables**：環境変数
+    - 他のサービスに露出させたり、変更できなくしたりできる
+    - 環境変数の名前には英字、数字、アンダースコアのみを使用できます。
+    - `${VARIABLE}`の構文を使用して、他の露出された環境変数や[特殊な変数 (special variable)](./special-variables)を参照できます。

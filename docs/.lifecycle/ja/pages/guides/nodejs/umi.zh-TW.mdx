@@ -1,0 +1,51 @@
+---
+ogImageTitle: Umi.js プロジェクトのデプロイ
+ogImageSubtitle: Zeaburでプロジェクトをデプロイする方法を学ぶ
+---
+
+# Umi.js プロジェクトのデプロイ
+
+ZeaburであなたのUmi.jsプロジェクトをデプロイします。
+
+### 第一ステップ：Umiプロジェクトの作成（オプション）
+
+環境必要条件：
+
+- nodeのバージョンが14以上であることを確認
+- umiチームはpnpmの使用を推奨しています
+
+ターミナルを開き、次のコマンドを入力します
+
+```bash
+$ pnpm dlx create-umi@latest
+
+✔ Install the following package: create-umi? (Y/n) · true
+✔ Pick Npm Client › pnpm
+✔ Pick Npm Registry › taobao
+
+Write: .gitignore
+Write: .npmrc
+Write: .umirc.ts
+Copy:  layouts/index.tsx
+Write: package.json
+Copy:  pages/index.tsx
+Copy:  pages/users.tsx
+Copy:  pages/users/foo.tsx
+
+> @ postinstall /private/tmp/sorrycc-vylwuW
+> umi setup
+
+info  - generate files
+```
+
+作成が完了したら、Gitリポジトリを初期化してGitHubにデプロイします。
+
+### 第二ステップ：Umiプロジェクトのデプロイ
+
+プロジェクト内で、**Deploy service** または **Add new service** ボタンをクリックし、**Deploy your source code**を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+デプロイしたいUmiプロジェクトリポジトリを検索してインポートをクリックすると、Umiプロジェクトの自動デプロイが開始されます。
+
+{/* converted with zhconvert.org | revision dict-a1f426e3-r1031 */}
