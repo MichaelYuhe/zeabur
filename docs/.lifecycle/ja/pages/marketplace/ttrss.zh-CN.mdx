@@ -1,0 +1,69 @@
+---
+title: Tiny Tiny RSSのデプロイ
+ogImageTitle: Tiny Tiny RSSのデプロイ
+ogImageSubtitle: ZeaburでのTiny Tiny RSSのデプロイ
+---
+
+# Tiny Tiny RSSサービスのデプロイ
+
+[Tiny Tiny RSS](https://tt-rss.org/)は、ウェブベースのニュースリーダーおよびアグリゲーターである無料でオープンソースのRSS/Atomリーダーです。
+
+この記事では、Zeaburで自分自身のTiny Tiny RSSサービスをデプロイし、独自のドメインをバインドする方法を説明します。
+
+## ステップ1：プロジェクトの設立
+
+まず最初に、プロジェクトを設立する必要があります。 [プロジェクト](https://dash.zeabur.com/projects) ページにアクセスすると、プロジェクトの一覧が表示されます。
+
+新しいプロジェクトを作成するには、リストの末尾にある "Create Project" ボタンをクリックしてください。
+
+![Create Project](/deploy/common/create-project.en-US.png)
+
+## ステップ2：PostgreSQLサービスのデプロイ
+
+Tiny Tiny RSSはMySQLと互換性がありますが、データベースとしてPostgreSQLを使用することを強く推奨します。
+
+まず、サービスマーケットプレイスでPostgreSQLサービスをワンクリックでデプロイします。
+
+"cmd + k" を押すか "Add Service" ボタンをクリックし、次に "Service Marketplace" を選択してください。
+
+![Select Marketplace](/deploy/common/select-service.en-US.png)
+
+PostgreSQLを選択します
+
+![Deploy PostgreSQL](/marketplace/postgresql/deploy.png)
+
+## ステップ3：Tiny Tiny RSSサービスのデプロイ
+
+Tiny Tiny RSSサービスをサービスマーケットプレイスでワンクリックでデプロイすることができます。
+
+"cmd + k" を押すか "Add Service" ボタンをクリックし、次に "Service Marketplace" を選択してください。
+
+![Select Marketplace](/deploy/common/select-service.en-US.png)
+
+一覧からTiny Tiny RSSを見つけ、クリックしてデプロイを開始します。
+
+## ステップ4：ドメインのバインディング
+
+Tiny Tiny RSSサービスのZeaburコントロールパネルで "ドメイン (Domain)" セクションに移動し、ドメインをバインドすることができます。
+
+このドメインは独自のドメインまたはZeaburが提供する無料のドメインである場合があります。
+
+サービスにドメインをバインドする方法については、[ドメインのバインディング](../deploy/domain-binding) を参照してください。
+
+## ステップ5：Mercury Parser APIサービスのデプロイ（オプション）
+
+Mercuryプラグインを使用したい場合は、追加でMercury Parser APIサービスをデプロイする必要があります。
+
+まず、GitHubからMercury Parser APIのリポジトリをフォークしてください [Mercury Parser API](https://github.com/HenryQW/mercury-parser-api)
+
+次に、新しいサービスを作成し、Gitからビルドするように選択します
+
+![Deploy](/deploy/common/select-service.en-US.png)
+
+さらに、ZeaburコントロールパネルでMercury Parser APIサービスの "Domain" セクションに移動し、ドメインをバインドし、Zeaburが提供する無料のドメインを取得する必要があります。
+
+最後に、Tiny Tiny RSSでMercuryプラグインを有効にし、ドメインを入力します。
+
+## ステップ6：使用を開始する
+
+デプロイが完了すると、バインドされたドメインを使用してTiny Tiny RSSサービスにアクセスできます。

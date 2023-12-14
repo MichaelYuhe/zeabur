@@ -1,0 +1,68 @@
+---
+title: ElysiaJS
+ogImageTitle: Deploy ElysiaJS Project
+ogImageSubtitle: Deploy ElysiaJS Project on Zeabur
+---
+
+# Deploy ElysiaJS Project
+
+[ElysiaJS](https://elysiajs.com) is a fast and friendly Bun web framework.
+
+This document will guide you on how to deploy ElysiaJS project on Zeabur.
+
+## Step 1: Create ElysiaJS Project
+
+### Method 1: Using Bun to create
+
+#### Install Bun
+
+Elysia is based on [Bun](https://bun.sh/), so you need to install Bun first.
+
+```bash
+curl https://bun.sh/install | bash
+```
+
+#### Initialize ElysiaJS Project
+
+```bash
+bun create elysia app-name
+```
+
+After the initialization is completed, you will have an ElysiaJS project in the `app-name` directory.
+
+```bash
+cd app-name
+bun run dev
+```
+
+Now you can visit http://localhost:8080 to see the result.
+
+#### Upload to GitHub
+
+If you want to deploy your ElysiaJS project on Zeabur, you need to upload the code to GitHub first.
+
+Simply create a new repository on GitHub and then push the code to the repository. For more detailed instructions, please refer to the [GitHub documentation](https://docs.github.com/en/github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line).
+
+### Method 2: Using Zeabur template
+
+We have prepared a [template](https://github.com/zeabur/elysia-template) for ElysiaJS App, you can click on the **Use this template** button to use the template.
+
+![Use this template](/guides/bun/elysia/template.png)
+
+## Step 2: Deploy ElysiaJS Project
+
+Click on **Deploy service**, then select **Deploy your source code**.
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+Search for your ElysiaJS App repository, click import, and your ElysiaJS App will start deploying automatically.
+
+## Next Steps
+
+After the deployment is completed, you may need to configure a domain for your ElysiaJS App.
+
+Open the "Domain" page of the service page, then click on "Generate Domain" or "Custom Domain".
+
+For more information on how to bind a domain to your service, please refer to [Domain Binding](../deploy/domain-binding).
+
+![Domain Binding](/guides/bun/elysia/domain.png)

@@ -1,0 +1,45 @@
+---
+ogImageTitle: 部署 Vite プロジェクト
+ogImageSubtitle: Zeabur でプロジェクトをデプロイする方法を学びます
+
+import { Tab, Tabs } from 'nextra-theme-docs'
+
+# Vite をデプロイする
+
+Zeabur で Vite プロジェクトをデプロイします。
+
+### ステップ 1: Vite プロジェクトを作成する（オプション）
+
+環境要件：
+
+- Vite には Node.js バージョン 14.18+、16+ が必要です。ただし、一部のテンプレートは正しく動作するためにより高い Node バージョンが必要な場合があります。パッケージ管理ツールが警告を出力した場合は、Node バージョンをアップグレードしてください。
+
+ターミナルを開いて、次のコマンドを入力します
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+```bash
+pnpm create vite
+```
+  </Tab>
+  <Tab>
+```bash
+npx create vite@latest
+```
+  </Tab>
+  <Tab>
+```bash
+yarn create vite
+```
+  </Tab>
+</Tabs>
+
+作成が完了したら、Git リポジトリを初期化して、GitHub にデプロイします。
+
+### ステップ 2: Vite プロジェクトをデプロイする
+
+プロジェクト内で、**Deploy service** または **Add new service** ボタンをクリックし、 **Deploy your source code** を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+デプロイしたい Vite コードリポジトリを検索し、インポートを選択してください。Vite アプリケーションは自動的にデプロイされます。

@@ -1,0 +1,76 @@
+---
+title: GitHubとの統合
+ogImageTitle: GitHubとの統合
+ogImageSubtitle: GitHubリポジトリへの接続
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+## GitHub個人リポジトリのデプロイ
+
+### Step1: サービスの作成
+
+デプロイしたいサービスを選択し、`サービスを作成` をクリックします。`Git` と `Marketplace` の2つのオプションが表示されますが、この場合は `Git` を選択します。
+
+![サービスの作成](/deploy/intergration/add-service.png)
+
+![サービスの選択](/deploy/intergration/select-service.png)
+
+### Step2: 個人リポジトリのバインド
+
+この時点で検索ボックスと `Configure GitHub` ボタンが表示されます。ボタンをクリックし、表示されるページの指示に従い、個人リポジトリへの認証を完了します。
+
+![GitHubのバインド](/deploy/intergration/configure-github.png)
+
+### Step3: リポジトリの選択
+
+認証が完了すると、検索ボックスが表示されます。デプロイしたいリポジトリの名前またはキーワードを入力し、検索ボタンをクリックしてリポジトリを選択します。
+
+![リポジトリの選択](/deploy/intergration/select-repo.png)
+
+## GitHub組織リポジトリのデプロイ
+
+### Step1: サービスの作成
+前述の [サービスの作成](/docs/zh-TW/intergration/github#步驟一建立服務) と同じ
+
+### Step2: 組織リポジトリのバインド
+
+この時点で検索ボックスと `Configure GitHub` ボタンが表示されます。ボタンをクリックし、表示されるページの指示に従い、組織リポジトリへの認証を完了します。インストールプロセス中には、必要に応じてすべての/一部のリポジトリを認証できます。
+
+![GitHub組織のバインド](/deploy/intergration/configure-org.png)
+
+### Step3: リポジトリの選択
+
+認証が完了すると、検索ボックスが表示されます。デプロイしたいリポジトリの名前またはキーワードを入力し、検索ボタンをクリックしてリポジトリを選択します。
+
+![組織リポジトリの選択](/deploy/intergration/select-org-repo.png)
+
+## 更新
+
+### リポジトリの変更
+
+個人/組織リポジトリの変更については、操作に応じてコードベースが自動的にリフレッシュされます。
+
+### 組織メンバーの変更
+
+組織メンバーの変更については、`GitHub Webhook` イベントをリアルタイムで監視し、リポジトリへのアクセス権限を常に `GitHub` と同期させます。
+
+## 削除
+
+### 個人リポジトリ
+
+#### 完全削除
+
+`Zeabur` を完全に削除するには、`GitHub` の `Settings` -> `Intergrations` -> `Applications` -> `Installed Gtihub Apps` で `Zeabur` を見つけ、`Configure` をクリックし、表示されるページで `Danger zone` をクリックして `Uninstall "Zeabur"` をクリックします。
+
+![完全削除](/deploy/intergration/uninstall-zeabur.png)
+
+#### 権限の復元
+
+後続の再認証のために権限を元に戻すには、`GitHub` の `Settings` -> `Intergrations` -> `Applications` -> `Authorized Gtihub Apps` で `Zeabur` を見つけ、`Revoke` をクリックし、表示されるページでリスクを確認して同意をクリックします。
+
+![権限の復元](/deploy/intergration/revoke-zeabur.png)
+
+### 組織リポジトリ
+
+個人リポジトリと同様の手順で、追加で `GitHub` の `Settings` -> `Switch to another account` から操作したい組織を選択します。

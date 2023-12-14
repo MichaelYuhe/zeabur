@@ -1,0 +1,70 @@
+---
+title: Serverless 导出フォーマット
+ogImageTitle: Serverless 导出フォーマット
+ogImageSubtitle: ZeaburでのServerlessデプロイ方法
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+# Serverless 导出フォーマット
+
+Zeaburはコンテナ化（Containerized）とServerlessの2つのデプロイ方法をサポートしています。プロジェクトのコードをZeaburにデプロイすると、Zeaburは[zbpack](https://github.com/zeabur/zbpack)を使用して自動分析と構築を行います。関連するプロセスの説明は[ビルド原理](./builds)で見つけることができます。
+
+コンテナ化のデプロイには多くの計算リソースが必要です。なぜなら、サービスが使用されていなくても、サービス内のさまざまな状態を維持するために開いたままにしておく必要があるからです。一方、Serverlessのデプロイ方法は、サービスを複数の即座に使用可能なServerless関数に分解し、サービスが外部リクエストを受け取った場合、関数を実行して結果を計算および返すため、より高い拡張性を提供し、不要なコストを削減します。
+
+## ビルドの出力フォーマット
+
+追加の設定がない場合、zbpackはプロジェクトで使用されている開発フレームワークに基づいてServerlessの方法を選択することになります。zbpackがServerlessの方法でビルドすることになった場合、ビルドが完了するとプロジェクトディレクトリ内に`.zeabur/output`ディレクトリが作成されます。このディレクトリの構造は次の通りです：
+
+```
+.zeabur/output
+├── static
+│   ├── index.html
+│   └── ...
+├── functions
+│   ├── index.func
+│   └── ...
+```
+
+`static`ディレクトリにはHTML、CSS、JavaScriptなどの静的リソースが格納されており、`functions`ディレクトリにはServerless関数が格納されています。`.func`で終わる各ディレクトリは、サービスのデプロイ後に特定のパスに対応する関数エントリを表しており、例えば：
+
+- `functions/index.func` は`/`に対応します
+- `functions/users/get.func`は`/users/get`に対応します
+- `functions/api/orders.func`は`/api/orders`に対応します
+- `functions/api/orders/[id].func`は`/api/orders/[id]`に対応し、`[id]`は動的なパスで、任意のパスに一致します。
+
+ビルド成果物の互換性を最大限にするために、zbpackのServerlessのビルド成果物フォーマットは、可能な限り[Vercel](https://vercel.com/)の[Build Output API (v3)](https://vercel.com/docs/build-output-api/v3)と一致するようにしています。これにより、既存のフレームワークまたは将来の新しいフレームワークの作者およびチームは、さまざまなプラットフォームに対応するためにアダプタ（Adapter）を再開発する必要がなくなります。
+
+## 純粋な静的出力
+
+[Vite](https://vitejs.dev/)などの純粋な静的ウェブサイトフレームワークの場合、zbpackによって`.zeabur/output`ディレクトリには`static`ディレクトリだけがあり、`functions`ディレクトリは存在しません。これは純粋な静的ウェブサイトフレームワークはServerlessの方法を使用せず、zbpackはすべての静的リソースを`static`ディレクトリにパッケージ化し、デプロイ時に`static`ディレクトリのリソースを直接CDNにデプロイするためです。
+
+## Serverless関数
+
+[Next.js](https://nextjs.org/)や[Nuxt.js](https://nuxtjs.org/)などのServerlessを使用する必要があるフレームワークの場合、zbpackによって`.zeabur/output`ディレクトリには`static`と`functions`の2つのディレクトリがあります。 `static`ディレクトリには静的リソースが、`functions`ディレクトリにはServerless関数が格納されています。
+
+<Callout>
+    現在、Serverless関数のデプロイはベータ段階です。Serverlessの方法でサービスをデプロイする場合は、ビルド時に `EXPERIMENTAL_SERVERLESS=1` の環境変数を追加する必要があります。
+
+    ご自身のプロジェクトまたはフレームワークがServerless関数の方式でデプロイできる場合でも、zbpackがまだそのサポートをしていない場合は、[GitHub](https://github.com/zeabur/zbpack)でIssueまたはPull Requestを提出していただければ幸いです。
+</Callout>
+
+Zeaburにデプロイされたサービスでは、サービスの詳細ページの右上で現在のデプロイ方法（Serverless方式またはコンテナ化（Containerized）方式）を確認することができます：
+
+![サービス詳細ページ](/advanced/serverless.png)
+
+## インクリメンタル・スタティック・リジェネレーション（ISR）
+
+Serverlessデプロイの利点を最大限に活用するために、Zeaburは「インクリメンタル・スタティック・リジェネレーション」（ISR、Incremental Static Regeneration）機能をサポートしています。この機能により、ページは静的リソースでありながら、Serverless関数でもあることができます。ウェブサイトを開始すると、使用者は非常に速い速度で静的リソースからコンテンツを表示することができます。この時、ZeaburはバックグラウンドでServerless関数を再度リクエストし、結果を静的リソースに更新して次回のアクセスに備えます。
+
+これにより、ユーザーは体験に影響を与えることなく、Serverlessのデプロイ方法から得られる利点を享受できます。また、ウェブサイトのSEOにも大きな助けとなります。
+
+特定のServerless関数にISR機能を有効にするには、出力結果の`.func`フォルダの横に同名の`.prerender-config.json`を追加するだけです：
+
+```json
+{
+  "expiration": "1h"
+}
+```
+
+`expiration`はオプションのプロパティで、ZeaburがServerless関数を再レンダリングする間隔を設定するために使用されます。

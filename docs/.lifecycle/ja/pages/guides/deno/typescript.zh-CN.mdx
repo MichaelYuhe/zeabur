@@ -1,0 +1,70 @@
+---
+title: TypeScript
+ogImageTitle: Deploy Deno Application
+ogImageSubtitle: Deploy your Deno application on Zeabur
+---
+
+# Deploy Deno Application
+
+This article will teach you how to deploy your [Deno](https://deno.land/) application on Zeabur.
+
+## Building Deno Application with TypeScript (Optional)
+
+- First, install Deno on your computer.
+
+- You can find more detailed instructions in the [Deno official documentation](https://deno.land/manual/getting_started/installation).
+
+Create a new file `main.ts`.
+
+```bash
+touch main.ts
+```
+
+Add the following content to your `main.ts`.
+
+Remember to modify the value of the `port` connection argument in the `serve` function to `Deno.env.get("PORT")`, so that the application can correctly listen on the environment variable PORT given by Zeabur.
+
+```typescript
+// in main.ts
+import { serve } from "https://deno.land/std@0.140.0/http/server.ts";
+
+function handler(_req: Request): Response {
+  return new Response("Hello, this is a Deno (https://deno.land/) web app deployed on Zeabur (https://zeabur.com)");
+}
+
+serve(handler, { port: Deno.env.get("PORT") });
+```
+
+Create a new file `deno.json` and add the following `start` command to the `tasks` field.
+
+```bash
+touch deno.json
+# in deno.json
+{
+  "tasks": {
+    "start": "deno run --allow-net --allow-env --allow-read main.ts"
+  }
+}
+```
+
+## Developing the Application
+
+Execute `deno task start` to start the development server.
+
+```bash
+deno task start
+```
+
+Now, you can start modifying the code to develop your TypeScript application.
+
+Once you are done, initialize a GitHub repository for it and upload it to your GitHub.
+
+## Deploying the Application
+
+In your project, click the 'Deploy New Service' button and select 'Deploy your source code'.
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+Search for the TypeScript code repository you want to deploy, and click import. Your TypeScript application will start deploying automatically.
+
+After the deployment is complete, you can refer to the Bind Domain Name file to learn how to bind a publicly accessible domain name for your TypeScript application.

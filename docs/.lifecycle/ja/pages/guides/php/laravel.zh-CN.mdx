@@ -1,0 +1,50 @@
+---
+ogImageTitle: デプロイ Laravel プロジェクト
+ogImageSubtitle: Laravel プロジェクトを Zeabur にデプロイする
+---
+
+# デプロイ Laravel プロジェクト
+
+この記事では、[Laravel](https://laravel.com/) プロジェクトを Zeabur にデプロイする方法を説明します。
+
+## ステップ：環境の設定
+
+まず、ローカルでビルドをテストして、プロジェクトが正常に動作することを確認できます。
+
+Zeabur に PHP のバージョン情報を提供する必要があります。バージョン情報は`composer.json` に記述します。
+
+```json
+{
+  "require": {
+        "php": "8.1"
+  }
+}
+```
+
+## ステップ2: プロジェクトの作成（オプション）
+
+まず、ローカル開発環境で Laravel プロジェクトを初期化する必要があります。[Laravel 公式ドキュメント](https://laravel.com/docs/9.x) に従ってこの手順を完了することができます。
+
+プロジェクトを作成した後、Git リポジトリを初期化し、GitHub にデプロイします。
+
+## ステップ3：Laravel プロジェクトのデプロイ
+
+プロジェクト内で、 **Deploy service** または **Add new service** ボタンをクリックし、 **Deploy your source code** を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+デプロイしたい Laravel コードリポジトリを検索し、インポートし、Laravel アプリケーションが自動的にデプロイされます。
+
+## ステップ4：Laravel プロジェクトに `APP_KEY` 環境変数を追加
+
+Laravel 開発者が新しい Laravel アプリケーションを作成またはクローンするたびに、アプリケーションキーまたは `APP_KEY` を生成することは最も重要な初期ステップの1つです。
+
+プロジェクトの環境変数設定ページに移動し、 `APP_KEY` 環境変数を入力します。
+
+次のコマンドを使用して、Laravel に `APP_KEY` を生成できます。
+```shell
+
+php artisan key:generate
+
+```
+![APP_KEY](/framework/laravel/app-key-setting.jpg)

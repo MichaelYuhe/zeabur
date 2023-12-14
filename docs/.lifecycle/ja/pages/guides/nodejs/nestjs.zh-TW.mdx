@@ -1,0 +1,116 @@
+---
+title: NestJS
+ogImageTitle: NestJS プロジェクトのデプロイ
+ogImageSubtitle: Zeabur で NestJS プロジェクトをデプロイする方法を学ぶ
+---
+
+import { Tab, Tabs, Callout } from 'nextra-theme-docs'
+
+# NestJS プロジェクトのデプロイ
+
+Zeabur であなたの NestJS プロジェクトをデプロイする。
+
+### 第一歩: NestJS プロジェクトを作成する（オプション）
+
+Nest CLI を使って NestJS プロジェクトを作成することができますので、まずはそれをインストールしてください。
+
+端末を開いて、以下を入力します。
+
+```bash
+npm install -g @nestjs/cli
+```
+
+次に、以下のコマンドで新しい NestJS プロジェクトを作成することができます。
+
+```bash
+nest new <your project name>
+```
+
+また、git clone を使用して既に作成された NestJS プロジェクトをダウンロードすることもできます。
+
+```bash
+git clone https://github.com/zeabur/nestjs-template.git <your project name>
+```
+
+次に、パッケージをインストールする必要があります。
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash
+    pnpm install
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    npm install
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn
+    ```
+  </Tab>
+</Tabs>
+
+### 第二歩: 環境変数を設定する
+
+<Callout type="info" emoji="ℹ️">
+`@nestjs/config` を既にインストールしている場合や、git clone で Zeabur のテンプレートをダウンロードしている場合は、このステップをスキップできます。
+</Callout>
+
+NodeJS では、`.env` で環境変数を設定することが一般的ですが、NestJS には `.env` ファイルを読み取るためのパッケージが提供されていますので、まずそれをインストールします。
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash
+    pnpm add @nestjs/config
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    npm install @nestjs/config
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn add @nestjs/config
+    ```
+  </Tab>
+</Tabs>
+
+続いて、`src/app.module.ts` で `ConfigModule` をインポートし、`imports` に `ConfigModule.forRoot()` を追加する必要があります。
+
+```typescript
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [ConfigModule.forRoot()],
+})
+export class AppModule {}
+```
+
+最後に `src/main.ts` でプロジェクトのポートを指定できます。
+
+```typescript
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(process.env.PORT || 3000);
+}
+bootstrap().then(() =>
+  console.log(`Application is running on: ${process.env.PORT || 3000}`),
+);
+```
+
+### 第三歩: NestJS プロジェクトをデプロイする
+
+あなたのプロジェクトで、**Deploy service** や **Add new service** ボタンをクリックし、**Deploy your source code** を選択します。
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+デプロイしたい NestJS のコードリポジトリを検索し、インポートをクリックすると、あなたの NestJS アプリケーションのデプロイが自動的に開始されます。
+
+{/* converted with zhconvert.org | revision dict-a1f426e3-r1031 */}

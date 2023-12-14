@@ -1,0 +1,114 @@
+---
+title: NestJS
+ogImageTitle: Deploy NestJS Application
+ogImageSubtitle: Learn how to deploy NestJS application on Zeabur
+---
+
+import { Tab, Tabs, Callout } from 'nextra-theme-docs'
+
+# Deploying NestJS Project
+
+Deploy your NestJS project on Zeabur.
+
+### Step 1: Create a NestJS Project (Optional)
+
+You can create a NestJS project using Nest CLI, so you can start by installing it.
+
+Open the terminal and run
+
+```bash
+npm install -g @nestjs/cli
+```
+
+Then, you can create a new NestJS project using the following command.
+
+```bash
+nest new <your project name>
+```
+
+You can also download an existing NestJS project using git clone.
+
+```bash
+git clone https://github.com/zeabur/nestjs-template.git <your project name>
+```
+
+Next, you need to install the dependencies:
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash
+    pnpm install
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    npm install
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn
+    ```
+  </Tab>
+</Tabs>
+
+### Step 2: Set Environment Variables
+
+<Callout type="info" emoji="ℹ️">
+  If you have already installed `@nestjs/config` or downloaded Zeabur's template using git clone, you can skip this step
+</Callout>
+
+In NodeJS, we often use `.env` to set environment variables, and NestJS also provides a dependency to read the `.env` file, so you can start by installing it.
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash
+    pnpm add @nestjs/config
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    npm install @nestjs/config
+    ```
+  </Tab>
+  <Tab>
+    ```bash
+    yarn add @nestjs/config
+    ```
+  </Tab>
+</Tabs>
+
+Then, you need to import `ConfigModule` in `src/app.module.ts` and add `ConfigModule.forRoot()` to `imports`.
+
+```typescript
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+
+@Module({
+  imports: [ConfigModule.forRoot()],
+})
+export class AppModule {}
+```
+
+Finally, you can specify the port for your application in `src/main.ts`.
+
+```typescript
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(process.env.PORT || 3000);
+}
+bootstrap().then(() =>
+  console.log(`Application is running on: ${process.env.PORT || 3000}`),
+);
+```
+
+### Step 3: Deploy NestJS Application
+
+In your project, click on the **Deploy service** or **Add new service** button and select **Deploy your source code**.
+
+![deploy](/deploy/common/select-service.en-US.png)
+
+Search for the NestJS application repository you want to deploy, and click on import, your NestJS application will start deploying automatically.

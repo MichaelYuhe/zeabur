@@ -1,0 +1,83 @@
+---
+title: GitHubとの統合
+ogImageTitle: GitHubとの統合
+ogImageSubtitle: GitHubリポジトリへの接続
+---
+
+import { Callout } from 'nextra-theme-docs'
+
+## GitHub個人リポジトリのデプロイ
+
+### Step1: サービスの作成
+
+デプロイするサービスを選択し、「新規サービス」をクリックします。すると `Git` と `Marketplace` の２つのオプションが表示されますが、今回は `Git` を選択します。
+
+![新規サービス](/deploy/intergration/add-service.png)
+
+![サービスの選択](/deploy/intergration/select-service.png)
+
+### Step2: 個人リポジトリのバインド
+
+ここで、検索ボックスと `Configure GitHub` ボタンが表示されます。ボタンをクリックして、表示されるページの指示に従い、個人リポジトリを認証します。
+
+![GitHubのバインド](/deploy/intergration/configure-github.png)
+
+### Step3: リポジトリの選択
+
+認証が完了すると、検索ボックスが表示され、デプロイしたいリポジトリの名前またはキーワードを入力し、検索ボタンをクリックしてリポジトリを選択します。
+
+![リポジトリの選択](/deploy/intergration/select-repo.png)
+
+## GitHub組織リポジトリのデプロイ
+
+### Step1: サービスの作成
+
+個人リポジトリの [Step1: サービスの作成](./github#Step1-サービスの作成) と同様です
+
+### Step2: 組織リポジトリのバインド
+
+ここで、検索ボックスと `Configure GitHub` ボタンが表示されます。ボタンをクリックして、表示されるページの指示に従い、組織リポジトリを認証します。インストールプロセス中に、必要に応じてすべての/一部のリポジトリを認証できます。
+
+![GitHub組織のバインド](/deploy/intergration/configure-org.png)
+
+### Step3: リポジトリの選択
+
+<Callout>
+1. もし組織の `Member` であり、`Owner` ではない場合、組織にバインドする十分な権限がないかもしれませんが、その場合でもアクセス可能なリポジトリをすべて閲覧し、`GitHub` の認可ページにおいて設定済みの既存のリポジトリが表示されます
+2. 組織の一員であり、`Owner` や `Member` ではなく `Outside Collaborator` の場合、組繹にバインドする十分な権限がないかもしれませんが、その場合でもアクセス可能なリポジトリをすべて閲覧し、`GitHub` の認可ページにおいて設定済みの既存のリポジトリが表示されます
+</Callout>
+
+認証が完了すると、検索ボックスが表示され、デプロイしたいリポジトリの名前またはキーワードを入力し、検索ボタンをクリックしてリポジトリを選択します。
+
+![組織リポジトリの選択](/deploy/intergration/select-org-repo.png)
+
+## 更新
+
+### リポジトリの変更
+
+個人/組織リポジトリの変更について、お客様の操作に合わせてコードベースが自動的に更新されます
+
+### 組織メンバーの変更
+
+組織メンバーに関する変更については、`GitHub Webhook` イベントをリアルタイムで監視し、リポジトリへのアクセス権限が `GitHub` と同じ状態を維持します
+
+## アンインストール
+
+### 個人リポジトリ
+
+#### 完全なアンインストール
+
+`Zeabur` を完全にアンインストールする場合は、`GitHub` の `Settings` -> `Intergrations` -> `Applications` -> `Installed Gtihub Apps` から `Zeabur` を見つけ、`Configure` をクリックし、ポップアップ画面で `Danger zone` をクリックし、`Uninstall "Zeabur"` をクリックしてください
+
+![完全なアンインストール](/deploy/intergration/uninstall-zeabur.png)
+
+#### 権限の取り消し
+
+将来的に `Zeabur` を再認証するために権限を取り消す場合は、`GitHub` の `Settings` -> `Intergrations` -> `Applications` -> `Authorized Gtihub Apps` から `Zeabur` を見つけ、`Revoke` をクリックし、ポップアップ画面でリスクを確認し、同意してください
+
+![権限の取り消し](/deploy/intergration/revoke-zeabur.png)
+
+### 組織リポジトリ
+
+[個人リポジトリ](./github#個人リポジトリ) と同じ手順で進行します。さらに、`GitHub` の `Settings` -> `Switch to another account` で操作したい組織を選択する必要があります
+

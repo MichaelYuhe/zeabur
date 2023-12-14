@@ -1,0 +1,49 @@
+---
+title: Multiple Environment Management
+ogImageTitle: Multiple Environment Management
+ogImageSubtitle: Establishing Isolated Environments for the Whole System
+---
+
+# Multiple Environment Management
+
+In a project development, it is often necessary to have multiple isolated environments, such as production environment, testing environment, and development environment.
+
+Zeabur makes it easy for you to establish multiple different environments for the entire system.
+
+## What is an Environment
+
+An environment is where your service operates. It can be a server, a cluster, a cloud host, or even a local machine.
+
+Different environments are independent of each other. They can have different settings, different services, and even different versions of services.
+
+Zeabur can help you establish multiple environments in a project.
+
+## Why You Need Multiple Environments
+
+In a project, you may need to deploy your service to different environments. For example, you may need to deploy your service to the production environment and the development environment.
+
+The production environment is for serving your customers. It should be stable and reliable. You should not frequently deploy services to the production environment.
+
+The development environment is for serving developers. It should be easy to deploy and test. You should frequently deploy your services to the development environment.
+
+## How to Manage Multiple Environments
+
+### Step 1: Create a New Environment
+
+Click the create environment button in the upper left corner to create a new environment.
+
+![create](/environment/create-env.png)
+
+After creation, all the services in your current project will be automatically copied and redeployed in the new environment.
+
+### Step 2: Bind Different Branches
+
+For the deployed code, you can bind different branches of the same service in different environments.
+
+Click on the service, go to the settings page, and scroll down to **Switch Branch** to select the branch you want to bind to in that environment.
+
+For example, when you choose the `dev` branch for a service, the status of the service is bound to the `dev` branch. You can then assign a domain for the `dev` environment to instantly view the online status of the `dev` environment.
+
+![create](/environment/branch.png)
+
+{/* converted with zhconvert.org | revision dict-a1f426e3-r1031 */}

@@ -1,0 +1,13 @@
+---
+title: Go
+ogImageTitle: 部署 Go プロジェクト
+ogImageSubtitle: Zeabur で Go プロジェクトをデプロイする
+---
+
+# 部署 Go プロジェクト
+
+[Go Modules](https://blog.golang.org/using-go-modules) をベースとしたすべてのプロジェクトをデプロイできます。ただし、プロジェクトのルートディレクトリに `main.go` が必要です。{T} 
+
+複数のプログラムエントリがある場合、それらを `cmd` ディレクトリに配置する必要があります。たとえば、`cmd/server-a/main.go` と `cmd/server-b/main.go` のような形で配置します。{T} 
+
+Zeabur は、`cmd` ディレクトリ内でサービス名と同じプログラムエントリを自動的に識別してデプロイします。
